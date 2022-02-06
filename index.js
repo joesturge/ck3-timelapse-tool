@@ -4,10 +4,11 @@ const path = require("path");
 const JSONStream = require("JSONStream");
 const es = require("event-stream");
 const moment = require("moment");
-const sqlite3 = require("sqlite3");
-const { open } = require("sqlite");
 const mergeStream = require("merge-stream");
 const getStream = require("get-stream");
+const util = require("util");
+const { Sequelize, Model, DataTypes } = require("sequelize");
+var chunker = require("stream-chunker");
 
 const parseDate = (str) => {
   return moment(str, "yyyy.MM.dd").utc().toDate();
@@ -21,73 +22,80 @@ const PROVINCE_DEF_FILE = "definition.csv";
 
 const [saveFilepath, installRootFilepath] = process.argv.slice(2);
 
-const saveFileStream = execFile(CK3_JSON_EXE, [
-  path.join(saveFilepath),
-]).stdout.pipe(
-  es.mapSync((data) => {
-    return data.replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
-  })
-);
-
-(async () => {
-  const db = await open({
-    filename: "database.db",
-    driver: sqlite3.Database,
-  });
-
-  // MIGRATIONS
-  //await db.exec('CREATE TABLE Allegiances (EndDate DATE, Top BOOLEAN, Parent INT, TitleId INT, FOREIGN KEY (TitleId) REFERENCES Titles(Id)')
-  await db.exec(
-    "CREATE TABLE IF NOT EXISTS Allegiances (EndDate DATE, Top BOOLEAN NOT NULL, Parent INT, TitleId INT NOT NULL);"
+const childProcess = execFile(CK3_JSON_EXE, [path.join(saveFilepath)]);
+childProcess.on("exit", () => {
+  childProcess.stdout.emit("end");
+});
+const saveFileStream = childProcess.stdout
+  .pipe(
+    chunker(10000, {
+      flush: true,
+      encoding: "utf8",
+    })
+  )
+  .pipe(
+    es.map((data, callback) => {
+      callback(null, data.replace(/[\u0000-\u001F\u007F-\u009F]/g, ""));
+    })
   );
 
-  // CLEAN TABLES
-  await db.exec("DELETE FROM Allegiances;");
+const sequelize = new Sequelize({
+  dialect: "sqlite",
+  storage: "database.db",
+  //logging: false,
+});
 
-  // BEGIN DB TRANSACTION
-  await db.exec("BEGIN TRANSACTION;");
+class Allegiance extends Model {}
+Allegiance.init(
+  {
+    endDate: DataTypes.DATE,
+    top: DataTypes.BOOLEAN,
+    parent: DataTypes.INTEGER,
+    titleId: DataTypes.INTEGER,
+  },
+  { sequelize, modelName: "allegiance" }
+);
 
-  const insertAllegiance = es.mapSync(async (data) => {
+const insertAllegiance = (transaction) =>
+  es.map(async (data, callback) => {
     data.titles.forEach(async (title) => {
-      await db.run(
-        "INSERT INTO Allegiances(EndDate, Top, Parent, TitleId) VALUES (:endDate, :top, :parent, :titleId);",
+      await Allegiance.create(
         {
-          ":endDate": data.endDate,
-          ":top": data.parent === title,
-          ":parent": data.parent,
-          ":titleId": title,
-        }
+          endDate: data.endDate,
+          top: data.parent === title,
+          parent: data.parent,
+          titleId: title,
+        },
+        { transaction }
       );
     });
+    callback();
   });
 
-  // const endDate = await getStream(
-  //   saveFileStream
-  //     .pipe(JSONStream.parse(["meta_data", "meta_date", { emitKey: true }]))
-  //     .pipe(
-  //       es.mapSync((data) => {
-  //         return data?.value;
-  //       })
-  //     )
-  // );
+(async () => {
+  await sequelize.sync();
 
-  // console.log(endDate);
+  await Allegiance.truncate();
+
+  const populateAllegiancesTransaction = await sequelize.transaction();
 
   // Generate past title allegiances
   const pastAllegiances = saveFileStream
     .pipe(JSONStream.parse(["dead_unprunable", { emitKey: true }]))
     .pipe(
-      es.mapSync((data) => {
+      es.map((data, callback) => {
         const date = parseDate(data?.value?.dead_data?.date);
         const domain = data?.value?.dead_data?.domain || [];
         const liegeTitle = data?.value?.dead_data?.liege_title;
 
         if (date && domain.length > 0 && (liegeTitle || liegeTitle === 0)) {
-          return {
+          callback(null, {
             endDate: date,
             parent: liegeTitle,
             titles: domain,
-          };
+          });
+        } else {
+          callback();
         }
       })
     );
@@ -98,24 +106,20 @@ const saveFileStream = execFile(CK3_JSON_EXE, [
       JSONStream.parse(["landed_titles", "landed_titles", { emitKey: true }])
     )
     .pipe(
-      es.mapSync((data) => {
+      es.map((data, callback) => {
         const liegeTitle = data?.value?.de_facto_liege;
         const title = data?.key;
 
-        return {
+        callback(null, {
           endDate: new Date(1453, 1, 1),
           parent: liegeTitle === 0 || liegeTitle ? liegeTitle : title,
           titles: title ? [title] : [],
-        };
+        });
       })
     );
 
-  const allegiances = mergeStream(currentAllegiances, pastAllegiances)
-    //allegiances.pipe(es.mapSync(console.log))
-    .pipe(insertAllegiance)
-    .pipe(
-      es.mapSync(async () => {
-        await db.exec("COMMIT TRANSACTION;");
-      })
-    );
+  const output = mergeStream(currentAllegiances, pastAllegiances)
+    .pipe(insertAllegiance(populateAllegiancesTransaction))
+    .pipe(insertAllegiance(populateAllegiancesTransaction))
+    .on("end", async () => await populateAllegiancesTransaction.commit());
 })();
