@@ -1,16 +1,13 @@
 const fs = require("fs");
 const { execFile } = require("child_process");
 const path = require("path");
-const csv = require("csvtojson");
-const { PNG } = require("pngjs");
 const JSONStream = require("JSONStream");
 const es = require("event-stream");
-const { Transform } = require("readable-stream");
 const moment = require("moment");
-const CombinedStream = require("combined-stream");
-
-// /landed_titles/landed_titles
-// /dead_unprunable
+const sqlite3 = require("sqlite3");
+const { open } = require("sqlite");
+const mergeStream = require("merge-stream");
+const getStream = require("get-stream");
 
 const parseDate = (str) => {
   return moment(str, "yyyy.MM.dd").utc().toDate();
@@ -24,9 +21,6 @@ const PROVINCE_DEF_FILE = "definition.csv";
 
 const [saveFilepath, installRootFilepath] = process.argv.slice(2);
 
-const outputStream = fs.createWriteStream("output.json");
-const output2Stream = fs.createWriteStream("output2.json");
-
 const saveFileStream = execFile(CK3_JSON_EXE, [
   path.join(saveFilepath),
 ]).stdout.pipe(
@@ -35,40 +29,93 @@ const saveFileStream = execFile(CK3_JSON_EXE, [
   })
 );
 
-// Generate current title allegiance
-const currentAllegiances = saveFileStream
-  .pipe(JSONStream.parse(["landed_titles", "landed_titles", { emitKey: true }]))
-  .pipe(
-    es.mapSync((data) => {
-      const liegeTitle = data?.value?.de_facto_liege;
-      const title = data?.key;
+(async () => {
+  const db = await open({
+    filename: "database.db",
+    driver: sqlite3.Database,
+  });
 
-      return {
-        top: !(liegeTitle === 0 || liegeTitle),
-        parent: liegeTitle,
-        titles: [title],
-      };
-    })
-  ).pipe(JSONStream.stringify()).pipe(outputStream);
+  // MIGRATIONS
+  //await db.exec('CREATE TABLE Allegiances (EndDate DATE, Top BOOLEAN, Parent INT, TitleId INT, FOREIGN KEY (TitleId) REFERENCES Titles(Id)')
+  await db.exec(
+    "CREATE TABLE IF NOT EXISTS Allegiances (EndDate DATE, Top BOOLEAN NOT NULL, Parent INT, TitleId INT NOT NULL);"
+  );
 
-// Generate past title allegiances
-const pastAllegiances = saveFileStream
-  .pipe(JSONStream.parse(["dead_unprunable", { emitKey: true }]))
-  .pipe(
-    es.mapSync((data) => {
-      const date = parseDate(
-        data?.value?.dead_data?.date
-      )?.toLocaleDateString();
-      const domain = data?.value?.dead_data?.domain;
-      const liegeTitle = data?.value?.dead_data?.liege_title;
+  // CLEAN TABLES
+  await db.exec("DELETE FROM Allegiances;");
 
-      if (date && domain && (liegeTitle || liegeTitle === 0)) {
+  // BEGIN DB TRANSACTION
+  await db.exec("BEGIN TRANSACTION;");
+
+  const insertAllegiance = es.mapSync(async (data) => {
+    data.titles.forEach(async (title) => {
+      await db.run(
+        "INSERT INTO Allegiances(EndDate, Top, Parent, TitleId) VALUES (:endDate, :top, :parent, :titleId);",
+        {
+          ":endDate": data.endDate,
+          ":top": data.parent === title,
+          ":parent": data.parent,
+          ":titleId": title,
+        }
+      );
+    });
+  });
+
+  // const endDate = await getStream(
+  //   saveFileStream
+  //     .pipe(JSONStream.parse(["meta_data", "meta_date", { emitKey: true }]))
+  //     .pipe(
+  //       es.mapSync((data) => {
+  //         return data?.value;
+  //       })
+  //     )
+  // );
+
+  // console.log(endDate);
+
+  // Generate past title allegiances
+  const pastAllegiances = saveFileStream
+    .pipe(JSONStream.parse(["dead_unprunable", { emitKey: true }]))
+    .pipe(
+      es.mapSync((data) => {
+        const date = parseDate(data?.value?.dead_data?.date);
+        const domain = data?.value?.dead_data?.domain || [];
+        const liegeTitle = data?.value?.dead_data?.liege_title;
+
+        if (date && domain.length > 0 && (liegeTitle || liegeTitle === 0)) {
+          return {
+            endDate: date,
+            parent: liegeTitle,
+            titles: domain,
+          };
+        }
+      })
+    );
+
+  // Generate current title allegiance
+  const currentAllegiances = saveFileStream
+    .pipe(
+      JSONStream.parse(["landed_titles", "landed_titles", { emitKey: true }])
+    )
+    .pipe(
+      es.mapSync((data) => {
+        const liegeTitle = data?.value?.de_facto_liege;
+        const title = data?.key;
+
         return {
-          endDate: date,
-          top: domain.includes(liegeTitle),
-          parent: liegeTitle,
-          titles: domain.filter((title) => title !== liegeTitle),
+          endDate: new Date(1453, 1, 1),
+          parent: liegeTitle === 0 || liegeTitle ? liegeTitle : title,
+          titles: title ? [title] : [],
         };
-      }
-    })
-  ).pipe(JSONStream.stringify()).pipe(output2Stream);
+      })
+    );
+
+  const allegiances = mergeStream(currentAllegiances, pastAllegiances)
+    //allegiances.pipe(es.mapSync(console.log))
+    .pipe(insertAllegiance)
+    .pipe(
+      es.mapSync(async () => {
+        await db.exec("COMMIT TRANSACTION;");
+      })
+    );
+})();
