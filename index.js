@@ -7,6 +7,7 @@ const JSONStream = require("JSONStream");
 const es = require("event-stream");
 const { Transform } = require("readable-stream");
 const moment = require("moment");
+const CombinedStream = require("combined-stream");
 
 // /landed_titles/landed_titles
 // /dead_unprunable
@@ -24,6 +25,7 @@ const PROVINCE_DEF_FILE = "definition.csv";
 const [saveFilepath, installRootFilepath] = process.argv.slice(2);
 
 const outputStream = fs.createWriteStream("output.json");
+const output2Stream = fs.createWriteStream("output2.json");
 
 const saveFileStream = execFile(CK3_JSON_EXE, [
   path.join(saveFilepath),
@@ -33,11 +35,30 @@ const saveFileStream = execFile(CK3_JSON_EXE, [
   })
 );
 
-saveFileStream
+// Generate current title allegiance
+const currentAllegiances = saveFileStream
+  .pipe(JSONStream.parse(["landed_titles", "landed_titles", { emitKey: true }]))
+  .pipe(
+    es.mapSync((data) => {
+      const liegeTitle = data?.value?.de_facto_liege;
+      const title = data?.key;
+
+      return {
+        top: !(liegeTitle === 0 || liegeTitle),
+        parent: liegeTitle,
+        titles: [title],
+      };
+    })
+  ).pipe(JSONStream.stringify()).pipe(outputStream);
+
+// Generate past title allegiances
+const pastAllegiances = saveFileStream
   .pipe(JSONStream.parse(["dead_unprunable", { emitKey: true }]))
   .pipe(
     es.mapSync((data) => {
-      const date = parseDate(data?.value?.dead_data?.date)?.toLocaleDateString();
+      const date = parseDate(
+        data?.value?.dead_data?.date
+      )?.toLocaleDateString();
       const domain = data?.value?.dead_data?.domain;
       const liegeTitle = data?.value?.dead_data?.liege_title;
 
@@ -50,6 +71,4 @@ saveFileStream
         };
       }
     })
-  )
-  .pipe(JSONStream.stringify())
-  .pipe(outputStream);
+  ).pipe(JSONStream.stringify()).pipe(output2Stream);
