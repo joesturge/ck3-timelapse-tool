@@ -1,4 +1,4 @@
-require('dotenv').config({ path: require('find-config')('.env') })
+require("dotenv").config({ path: require("find-config")(".env") });
 
 const { execFile } = require("child_process");
 const path = require("path");
@@ -13,7 +13,9 @@ const parseDate = (str) => {
   return moment(str, "yyyy.MM.dd").utc().toDate();
 };
 
-const childProcess = execFile("./bin/ck3json.exe", [process.env.SAVE_FILE_PATH]);
+const childProcess = execFile("./bin/ck3json.exe", [
+  process.env.SAVE_FILE_PATH,
+]);
 childProcess.on("exit", () => {
   childProcess.stdout.emit("end");
 });
@@ -25,8 +27,8 @@ const saveFileStream = childProcess.stdout
     })
   )
   .pipe(
-    es.map((data, callback) => {
-      callback(null, data.replace(/[\u0000-\u001F\u007F-\u009F]/g, ""));
+    es.mapSync((data) => {
+      return data.replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
     })
   );
 
@@ -48,7 +50,7 @@ Allegiance.init(
 );
 
 const insertAllegiance = (transaction) =>
-  es.map(async (data, callback) => {
+  es.mapSync(async (data) => {
     data.titles.forEach(async (title) => {
       await Allegiance.create(
         {
@@ -60,7 +62,6 @@ const insertAllegiance = (transaction) =>
         { transaction }
       );
     });
-    callback();
   });
 
 (async () => {
@@ -74,19 +75,17 @@ const insertAllegiance = (transaction) =>
   const pastAllegiances = saveFileStream
     .pipe(JSONStream.parse(["dead_unprunable", { emitKey: true }]))
     .pipe(
-      es.map((data, callback) => {
+      es.mapSync((data) => {
         const date = parseDate(data?.value?.dead_data?.date);
         const domain = data?.value?.dead_data?.domain || [];
         const liegeTitle = data?.value?.dead_data?.liege_title;
 
         if (date && domain.length > 0 && (liegeTitle || liegeTitle === 0)) {
-          callback(null, {
+          return {
             endDate: date,
             parent: liegeTitle,
             titles: domain,
-          });
-        } else {
-          callback();
+          };
         }
       })
     );
@@ -97,20 +96,19 @@ const insertAllegiance = (transaction) =>
       JSONStream.parse(["landed_titles", "landed_titles", { emitKey: true }])
     )
     .pipe(
-      es.map((data, callback) => {
+      es.mapSync((data, callback) => {
         const liegeTitle = data?.value?.de_facto_liege;
         const title = data?.key;
 
-        callback(null, {
+        return {
           endDate: new Date(1453, 1, 1),
           parent: liegeTitle === 0 || liegeTitle ? liegeTitle : title,
           titles: title ? [title] : [],
-        });
+        };
       })
     );
 
   const output = mergeStream(currentAllegiances, pastAllegiances)
-    .pipe(insertAllegiance(populateAllegiancesTransaction))
     .pipe(insertAllegiance(populateAllegiancesTransaction))
     .on("end", async () => await populateAllegiancesTransaction.commit());
 })();
