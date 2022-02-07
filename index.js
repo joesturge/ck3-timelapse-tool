@@ -1,28 +1,19 @@
-const fs = require("fs");
+require('dotenv').config({ path: require('find-config')('.env') })
+
 const { execFile } = require("child_process");
 const path = require("path");
 const JSONStream = require("JSONStream");
 const es = require("event-stream");
 const moment = require("moment");
 const mergeStream = require("merge-stream");
-const getStream = require("get-stream");
-const util = require("util");
 const { Sequelize, Model, DataTypes } = require("sequelize");
-var chunker = require("stream-chunker");
+const chunker = require("stream-chunker");
 
 const parseDate = (str) => {
   return moment(str, "yyyy.MM.dd").utc().toDate();
 };
 
-const CK3_JSON_EXE = "./ck3json.exe";
-const TITLE_DEF_FILE = "game/common/landed_titles/00_landed_titles.txt";
-const MAP_DATA_PATH = "game/map_data";
-const PROVINCE_PNG_FILE = "provinces.png";
-const PROVINCE_DEF_FILE = "definition.csv";
-
-const [saveFilepath, installRootFilepath] = process.argv.slice(2);
-
-const childProcess = execFile(CK3_JSON_EXE, [path.join(saveFilepath)]);
+const childProcess = execFile("./bin/ck3json.exe", [process.env.SAVE_FILE_PATH]);
 childProcess.on("exit", () => {
   childProcess.stdout.emit("end");
 });
@@ -42,7 +33,7 @@ const saveFileStream = childProcess.stdout
 const sequelize = new Sequelize({
   dialect: "sqlite",
   storage: "database.db",
-  //logging: false,
+  logging: false,
 });
 
 class Allegiance extends Model {}

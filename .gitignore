@@ -130,7 +130,10 @@ dist
 .pnp.*
 
 # SqlLite
-.db
+*.db*
 
 # Executables
 bin/
+
+# CK3 Savefiles
+*.ck3
