@@ -88,19 +88,24 @@ const JominiStream = () => {
             this.emit("data", { path, value: token.value });
             break;
           case "arrayStart":
-            path.push("*");
+            path.push(0);
             break;
           case "arrayEnd":
             path.pop();
             path.pop();
             break;
           case "objectEnd":
-            if(path.at(-1) !== "*") {
+            if(Number.isInteger(path.at(-1))) {
+              path.push(path.pop() + 1);
+            } else {
               path.pop();
             }
             break;
           case "arrayValue":
             this.emit("data", { path, value: token.value });
+            if(Number.isInteger(path.at(-1))) {
+              path.push(path.pop() + 1);
+            }
           default:
         }
       }
