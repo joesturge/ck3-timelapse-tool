@@ -18,6 +18,9 @@ k_papal_state = {
 		add = @always_primary_score
 	}
 
+	court_data = {
+	}
+
 	destroy_if_invalid_heir = "yes"
 	no_automatic_claims = "@correct_culture_primary_score"
 	always_follows_primary_heir = yes

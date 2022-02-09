@@ -69,6 +69,7 @@ const JominiStream = () => {
   });
 
   var lexerLine = 1;
+  var currentKey;
   const path = [];
 
   const splitterStream = split();
@@ -81,21 +82,29 @@ const JominiStream = () => {
       for (let token of lexer) {
         switch (token.type) {
           case "key":
-            path.push(token.value);
+            currentKey = token.value;
             break;
           case "value":
-            path.pop();
-            this.emit("data", { path, value: token.value });
+            this.emit("data", {
+              path: [...path, currentKey],
+              value: token.value,
+            });
             break;
           case "arrayStart":
+            currentKey && path.push(currentKey);
             path.push(0);
+            break;
+          case "objectStart":
+            if (!Number.isInteger(path.at(-1))) {
+              currentKey && path.push(currentKey);
+            }
             break;
           case "arrayEnd":
             path.pop();
             path.pop();
             break;
           case "objectEnd":
-            if(Number.isInteger(path.at(-1))) {
+            if (Number.isInteger(path.at(-1))) {
               path.push(path.pop() + 1);
             } else {
               path.pop();
@@ -103,11 +112,18 @@ const JominiStream = () => {
             break;
           case "arrayValue":
             this.emit("data", { path, value: token.value });
-            if(Number.isInteger(path.at(-1))) {
+            if (Number.isInteger(path.at(-1))) {
               path.push(path.pop() + 1);
             }
           default:
+            break;
         }
+        
+        if (lexerLine % 10000 === 0) {
+          console.log(lexerLine)
+        }
+
+        prevToken = token;
       }
 
       this.resume();
@@ -117,7 +133,7 @@ const JominiStream = () => {
   return duplex(splitterStream, lexingStream);
 };
 
-fs.createReadStream("test/data/sample.txt", { encoding: "utf-8" })
+fs.createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" })
   .pipe(JominiStream(["k_papal_state"]))
   .pipe(stringify())
   .pipe(fs.createWriteStream("output.jsonl"));
