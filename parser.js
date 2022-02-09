@@ -4,39 +4,68 @@ const { on } = require("events");
 const fs = require("fs");
 const moo = require("moo");
 
+const comment = {
+  match: /\s*#.*/,
+  value: (s) => s.replace("#", "").trim(),
+};
+const blank = {
+  match: /[\t ]+/
+};
+
 const JominiStream = () => {
   const lexer = moo.states({
-    object: {
-      key: {
-        match: /[^=]+=/,
-        value: (s) => s.replace(/=/, "").trim(),
-        next: "field",
-      },
-      comment: /#.+/,
-      arrayItem: {
-        match: /\s*(?:"[^={}]+"|[^={}\s]+)\s*/,
-        value: (s) => s.replace(/=/, "").trim(),
-      },
-      objectEnd: {
-        match: /s*}\s*/,
-        pop: 1,
-      },
-      ignore: /./,
-    },
-    field: {
-      fieldItem: {
-        match: /(?<==)\s*(?:"[^={}]+"|[^={}\s]+)/,
-        value: (s) => s.trim().replace(/"/g, ""),
-        next: "object",
+    descend: {
+      ascend: {
+        match: /\s*}/,
+        pop: 1
       },
       objectStart: {
-        match: /(?<==)\s*{\s*/,
+        match: /(?=\s*[^=]+=)/,
         push: "object",
       },
+      arrayStart: {
+        match: /(?=\s*(?:"[^={}]+"|[^={}\s]+))/,
+        push: "array",
+      },
+      arrayStart: {
+        match: /(?=\s*(?:"[^={}]+"|[^={}\s]+))/,
+        push: "array",
+      },
+      comment,
     },
+    object: {
+      key: {
+        match: /\s*[^=]+(?==)/,
+        value: (s) => s.trim(),
+      },
+      value: {
+        match: /=\s*(?:"[^={}]+"|[^={}\s]+)/,
+        value: (s) => s.replace("=", "").trim(),
+      },
+      descend: {
+        match: /=\s*{+/,
+        push: "descend",
+      },
+      objectEnd: {
+        match: /(?=\s*})/,
+        pop: 1
+      },
+      comment,
+      blank
+    },
+    array: {
+      value: {
+        match: /\s*(?:"[^={}]+"|[^={}\s]+)/,
+        value: (s) => s.replace("=", "").trim(),
+      },
+      arrayEnd: {
+        match: /(?=\s*})/,
+        pop: 1
+      }
+    }
   });
 
-  var lexerLine = 0;
+  var lexerLine = 1;
 
   const path = [];
 
@@ -46,7 +75,6 @@ const JominiStream = () => {
       this.pause();
 
       lexer.reset(data, { ...lexer.save(), line: lexerLine++, col: 0 });
-      console.log("after", lexer.stack, lexer.state)
 
       for (let token of lexer) {
         this.emit("data", token);
@@ -59,7 +87,6 @@ const JominiStream = () => {
   return duplex(splitterStream, lexingStream);
 };
 
-fs.createReadStream("test/data/sample.txt", { encoding: "utf-8" }).pipe(
-  JominiStream(["k_papal_state"])
-)
-.on("data", console.log);
+fs.createReadStream("test/data/sample.txt", { encoding: "utf-8" })
+  .pipe(JominiStream(["k_papal_state"]))
+  .on("data", console.log);
