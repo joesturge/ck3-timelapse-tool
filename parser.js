@@ -1,5 +1,6 @@
 const { duplex } = require("event-stream");
 const { through, split } = require("event-stream");
+const { on } = require("events");
 const fs = require("fs");
 const moo = require("moo");
 
@@ -9,7 +10,7 @@ const JominiStream = () => {
       key: {
         match: /[^=]+=/,
         value: (s) => s.replace(/=/, "").trim(),
-        push: "field",
+        next: "field",
       },
       comment: /#.+/,
       arrayItem: {
@@ -26,7 +27,7 @@ const JominiStream = () => {
       fieldItem: {
         match: /(?<==)\s*(?:"[^={}]+"|[^={}\s]+)/,
         value: (s) => s.trim().replace(/"/g, ""),
-        pop: 1,
+        next: "object",
       },
       objectStart: {
         match: /(?<==)\s*{\s*/,
@@ -35,41 +36,30 @@ const JominiStream = () => {
     },
   });
 
+  var lexerLine = 0;
+
   const path = [];
 
   const splitterStream = split();
   const lexingStream = splitterStream.pipe(
-    through(
-      function write(data) {
-        this.pause();
-        lexer.reset(data);
-        for (let token of lexer) {
-          switch (token.type) {
-            case "key":
-              path.push(token.value);
-              this.emit("data", path);
-              break;
-            case "fieldItem":
-              path.pop();
-              break;
-            case "objectEnd":
-              path.pop();
-              break;
-            default:
-              break;
-          }
-        }
-        this.resume();
-      },
-      function end(data) {
-        console.log("end");
+    through(function write(data) {
+      this.pause();
+
+      lexer.reset(data, { ...lexer.save(), line: lexerLine++, col: 0 });
+      console.log("after", lexer.stack, lexer.state)
+
+      for (let token of lexer) {
+        this.emit("data", token);
       }
-    )
+
+      this.resume();
+    })
   );
 
   return duplex(splitterStream, lexingStream);
 };
 
-fs.createReadStream("test/data/sample.txt", { encoding: "utf-8" })
-  .pipe(JominiStream(["k_papal_state"]))
-  .on("data", (data) => console.log("data", data));
+fs.createReadStream("test/data/sample.txt", { encoding: "utf-8" }).pipe(
+  JominiStream(["k_papal_state"])
+)
+.on("data", console.log);
