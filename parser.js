@@ -20,10 +20,10 @@ const JominiStream = () => {
         match: /s*}\s*/,
         pop: 1,
       },
-      ignore: /./
+      ignore: /./,
     },
     field: {
-      string: {
+      fieldItem: {
         match: /(?<==)\s*(?:"[^={}]+"|[^={}\s]+)/,
         value: (s) => s.trim().replace(/"/g, ""),
         pop: 1,
@@ -32,8 +32,10 @@ const JominiStream = () => {
         match: /(?<==)\s*{\s*/,
         push: "object",
       },
-    }
+    },
   });
+
+  const path = [];
 
   const splitterStream = split();
   const lexingStream = splitterStream.pipe(
@@ -41,8 +43,21 @@ const JominiStream = () => {
       function write(data) {
         this.pause();
         lexer.reset(data);
-        for (let here of lexer) {
-          this.emit("data", { value: here.value, type: here.type });
+        for (let token of lexer) {
+          switch (token.type) {
+            case "key":
+              path.push(token.value);
+              this.emit("data", path);
+              break;
+            case "fieldItem":
+              path.pop();
+              break;
+            case "objectEnd":
+              path.pop();
+              break;
+            default:
+              break;
+          }
         }
         this.resume();
       },
