@@ -24,5 +24,19 @@ k_papal_state = {
 	de_jure_drift_disabled = @not_real
 
 	male_names = { Alexander "Anastasius" Benedictus Caelestinus Callistus Clemens Eugenius Leo Gregorius Hadrianus Honorius Innocentius Ioannes Lucius Marinus Martinus Nicolaus Sergius Silvester Stephanus Urbanus Victor }
-	
+	data={ {
+			flag="achievement_rags_to_riches_valid"
+			data={
+				type=boolean
+				identity=1
+			}
+		}
+ {
+			flag="started_canute_the_greater_achievement"
+			data={
+				type=boolean
+				identity=1
+			}
+		}
+	}
 }
