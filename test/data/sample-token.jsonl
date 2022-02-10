@@ -73,6 +73,17 @@
 {"type":"ascend","value":"\t\t}"}
 {"type":"objectEnd","value":""}
 {"type":"ascend","value":"\t}"}
+{"type":"key","value":"single_line_object"}
+{"type":"descend","value":"= { "}
+{"type":"objectStart","value":""}
+{"type":"key","value":"car"}
+{"type":"value","value":"yes"}
+{"type":"key","value":"train"}
+{"type":"value","value":"no"}
+{"type":"key","value":"sport"}
+{"type":"value","value":"volly ball"}
+{"type":"objectEnd","value":""}
+{"type":"ascend","value":" }"}
 {"type":"key","value":"bad_color"}
 {"type":"value","value":"hsv{ 0.9 1 0.3 }"}
 {"type":"comment","value":"hsv{ 0.73 0.8 0.4 }  #hsv{ 0.77 0.8 0.6 } #{ 143 12 125 }"}

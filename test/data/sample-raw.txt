@@ -30,6 +30,8 @@ k_papal_state = {
 		}
 	}
 
+	single_line_object = { car=yes train = no sport = "volly ball" }
+
 	bad_color =  hsv{ 0.9 1 0.3 } #hsv{ 0.73 0.8 0.4 }  #hsv{ 0.77 0.8 0.6 } #{ 143 12 125 }
 	bad_color_array = { hsv { 0.9 1 0.3 } hsv{ 0.73 0.8 0.4 }  hsv{ 0.77 0.8 0.6 } }
 	

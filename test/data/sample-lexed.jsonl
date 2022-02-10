@@ -22,6 +22,9 @@
 {"path":["k_papal_state","b_ucramund","cultural_names","name_list_saxon"],"value":"cn_ucramund"}
 {"path":["k_papal_state","b_ucramund","cultural_names","name_list_swabian"],"value":"cn_ucramund"}
 {"path":["k_papal_state","b_ucramund","cultural_names","name_list_bavarian"],"value":"cn_ucramund"}
+{"path":["k_papal_state","single_line_object","car"],"value":"yes"}
+{"path":["k_papal_state","single_line_object","train"],"value":"no"}
+{"path":["k_papal_state","single_line_object","sport"],"value":"volly ball"}
 {"path":["k_papal_state","bad_color"],"value":"hsv{ 0.9 1 0.3 }"}
 {"path":["k_papal_state","bad_color_array",0],"value":"hsv { 0.9 1 0.3 }"}
 {"path":["k_papal_state","bad_color_array",1],"value":"hsv{ 0.73 0.8 0.4 }"}

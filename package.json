@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@terascope/fetch-github-release": "^0.8.7",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "tmp": "^0.2.1"
   }
 }
