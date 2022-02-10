@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "fetch-github-release -s win_x86 scorpdx ck3json bin",
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +22,7 @@
     "stream-chunker": "^1.2.8"
   },
   "devDependencies": {
-    "@terascope/fetch-github-release": "^0.8.7"
+    "@terascope/fetch-github-release": "^0.8.7",
+    "jest": "^27.5.1"
   }
 }
