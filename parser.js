@@ -1,6 +1,7 @@
-const { duplex, stringify } = require("event-stream");
+const { duplex, stringify, replace } = require("event-stream");
 const { through, split } = require("event-stream");
 const fs = require("fs");
+const jsesc = require("jsesc");
 const moo = require("moo");
 
 const comment = {
@@ -91,6 +92,74 @@ const TokenizerStream = () => {
   return duplex(splitterStream, tokenizingStream);
 };
 
+const JsonLexingStream = () => {
+  var firstOpener;
+  var descFlag = false;
+
+  const convertToJsonStream = through(
+    function write(data) {
+      this.pause();
+      switch (data.type) {
+        case "objectStart":
+          firstOpener = firstOpener || data.type;
+          this.emit("data", "{");
+          descFlag = false;
+          break;
+        case "objectEnd":
+          this.emit("data", "},");
+          descFlag = false;
+          break;
+        case "arrayStart":
+          firstOpener = firstOpener || data.type;
+          this.emit("data", "[");
+          descFlag = false;
+          break;
+        case "arrayEnd":
+          this.emit("data", "],");
+          descFlag = false;
+          break;
+        case "key":
+          this.emit("data", `"${jsesc(data.value)}":`);
+          descFlag = false;
+          break;
+        case "value":
+          this.emit("data", `"${jsesc(data.value)}",`);
+          descFlag = false;
+          break;
+        case "arrayValue":
+          this.emit("data", `"${jsesc(data.value)}",`);
+          descFlag = false;
+          break;
+        case "ascend":
+          if (descFlag) {
+            this.emit("data", "{},");
+          }
+          descFlag = false;
+          break;
+        case "descend":
+          descFlag = true;
+          break;
+        default:
+          break;
+      }
+      prevToken = data.type;
+      this.resume();
+    },
+    function end() {
+      if (firstOpener === "objectStart") {
+        this.emit("data", "}");
+      } else if (firstOpener === "arrayStart") {
+        this.emit("data", "]");
+      }
+      this.emit("end");
+    }
+  );
+
+  const fixEndCommas = convertToJsonStream.pipe(replace(/,(?=\s*[}\]])/, ""));
+
+  return duplex(convertToJsonStream, fixEndCommas);
+};
+
 const LexingStream = () => {
   var currentKey;
   const path = [];
@@ -159,4 +228,5 @@ module.exports = {
   TokenizerStream,
   LexingStream,
   ParsingStream,
+  JsonLexingStream,
 };

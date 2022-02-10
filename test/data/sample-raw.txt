@@ -42,6 +42,12 @@ k_papal_state = {
 
 
 	court_data = {
+		
+	}
+
+	hello=true
+
+	court_data2 = {
 	}
 
 	destroy_if_invalid_heir = "yes"

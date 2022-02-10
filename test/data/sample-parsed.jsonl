@@ -30,6 +30,7 @@
 {"path":["k_papal_state","bad_color_array",1],"value":"hsv{ 0.73 0.8 0.4 }"}
 {"path":["k_papal_state","bad_color_array",2],"value":"hsv{ 0.77 0.8 0.6 }"}
 {"path":["k_papal_state","ai_primary_priority","add"],"value":"@always_primary_score"}
+{"path":["k_papal_state","hello"],"value":"true"}
 {"path":["k_papal_state","destroy_if_invalid_heir"],"value":"yes"}
 {"path":["k_papal_state","no_automatic_claims"],"value":"@correct_culture_primary_score"}
 {"path":["k_papal_state","always_follows_primary_heir"],"value":"yes"}

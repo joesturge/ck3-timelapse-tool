@@ -105,6 +105,12 @@
 {"type":"ascend","value":"\t}"}
 {"type":"key","value":"court_data"}
 {"type":"descend","value":"= {"}
+{"type":"blank","value":"\t\t"}
+{"type":"ascend","value":"\t}"}
+{"type":"key","value":"hello"}
+{"type":"value","value":"true"}
+{"type":"key","value":"court_data2"}
+{"type":"descend","value":"= {"}
 {"type":"ascend","value":"\t}"}
 {"type":"key","value":"destroy_if_invalid_heir"}
 {"type":"value","value":"yes"}

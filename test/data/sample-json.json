@@ -1,0 +1,77 @@
+{
+  "@correct_culture_primary_score": "yes",
+  "@better_than_the_alternatives_score": "no no",
+  "@always_primary_score": "1000",
+  "k_papal_state": {
+    "color": ["255", "249", "198"],
+    "color2": ["220", "220", "0"],
+    "definite_form": "yes",
+    "ruler_uses_title_name": "@better_than_the_alternatives_score",
+    "landless": "yes",
+    "capital": "c_roma",
+    "b_ucramund": {
+      "province": "2822",
+      "color": ["91", "163", "48"],
+      "color2": ["255", "255", "255"],
+      "cultural_names": {
+        "name_list_franconian": "cn_ucramund",
+        "name_list_saxon": "cn_ucramund",
+        "name_list_swabian": "cn_ucramund",
+        "name_list_bavarian": "cn_ucramund"
+      }
+    },
+    "single_line_object": {
+      "car": "yes",
+      "train": "no",
+      "sport": "volly ball"
+    },
+    "bad_color": "hsv{ 0.9 1 0.3 }",
+    "bad_color_array": [
+      "hsv { 0.9 1 0.3 }",
+      "hsv{ 0.73 0.8 0.4 }",
+      "hsv{ 0.77 0.8 0.6 }"
+    ],
+    "ai_primary_priority": { "add": "@always_primary_score" },
+    "court_data": {},
+    "hello": "true",
+    "court_data2": {},
+    "destroy_if_invalid_heir": "yes",
+    "no_automatic_claims": "@correct_culture_primary_score",
+    "always_follows_primary_heir": "yes",
+    "de_jure_drift_disabled": "@not_real",
+    "male_names": [
+      "Alexander",
+      "Anastasius",
+      "Benedictus",
+      "Caelestinus",
+      "Callistus",
+      "Clemens",
+      "Eugenius",
+      "Leo",
+      "Gregorius",
+      "Hadrianus",
+      "Honorius",
+      "Innocentius",
+      "Ioannes",
+      "Lucius",
+      "Marinus",
+      "Martinus",
+      "Nicolaus",
+      "Sergius",
+      "Silvester",
+      "Stephanus",
+      "Urbanus",
+      "Victor"
+    ],
+    "data": [
+      {
+        "flag": "achievement_rags_to_riches_valid",
+        "data": { "type": "boolean", "identity": "1" }
+      },
+      {
+        "flag": "started_canute_the_greater_achievement",
+        "data": { "type": "boolean", "identity": "1" }
+      }
+    ]
+  }
+}
