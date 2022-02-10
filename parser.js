@@ -1,12 +1,10 @@
 const { duplex, stringify } = require("event-stream");
 const { through, split } = require("event-stream");
-const { on } = require("events");
 const fs = require("fs");
 const moo = require("moo");
-const { type } = require("os");
 
 const comment = {
-  match: /\s*#.*/,
+  match: /\s*#.*$/,
   value: (s) => s.replace("#", "").trim(),
 };
 const blank = {
@@ -16,43 +14,46 @@ const blank = {
 const JominiStream = () => {
   const lexer = moo.states({
     descend: {
+      comment,
       header: /SAV.+/,
       ascend: {
         match: /\s*}/,
         pop: 1,
       },
       objectStart: {
-        match: /(?=\s*[^=]+=)/,
+        match: /(?=\s*[^#=]+=)/,
         push: "object",
       },
       arrayStart: {
-        match: /(?=\s*(?:"[^={}]+"|[^={}\s]+|{))/,
+        match: /(?=\s*(?:"[^#={}]+"|[^#={}\s]+|{))/,
         push: "array",
       },
+      blank,
     },
     object: {
+      comment,
       key: {
         match: /\s*[^=]+(?==)/,
         value: (s) => s.trim(),
       },
       value: {
-        match: /=\s*(?:"[^={}]+"|[^={}\s]+)/,
+        match: /=\s*(?:[a-zA-Z]+\s*{[^#{}]+}|"[^#={}]+"|[^#={}\s]+)/,
         value: (s) => s.replace(/["=]/g, "").trim(),
       },
       descend: {
-        match: /=\s*{/,
+        match: /=\s*{\s*(?:#.+)?/,
         push: "descend",
       },
       objectEnd: {
         match: /(?=\s*})/,
         pop: 1,
       },
-      comment,
       blank,
     },
     array: {
+      comment,
       arrayValue: {
-        match: /\s*(?:"[^={}]+"|[^={}\s]+)/,
+        match: /\s*(?:[a-zA-Z]+\s*{[^#{}]+}|"[^={}]+"|[^={}\s]+)/,
         value: (s) => s.replace(/"/g, "").trim(),
       },
       descend: {
@@ -63,7 +64,6 @@ const JominiStream = () => {
         match: /(?=\s*})/,
         pop: 1,
       },
-      comment,
       blank,
     },
   });
@@ -138,7 +138,7 @@ const JominiStream = () => {
   return duplex(splitterStream, lexingStream);
 };
 
-fs.createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" })
+fs.createReadStream("test/data/sample.txt", { encoding: "utf-8" })
   .pipe(JominiStream(["k_papal_state"]))
   .pipe(stringify())
-  .pipe(fs.createWriteStream("output.jsonl"));
+  .pipe(fs.createWriteStream("test/data/sample.jsonl"));

@@ -1,0 +1,61 @@
+{"path":["@correct_culture_primary_score"],"value":"yes"}
+{"path":["@better_than_the_alternatives_score"],"value":"no no"}
+{"path":["@always_primary_score"],"value":"1000"}
+{"path":["k_papal_state","color",0],"value":"255"}
+{"path":["k_papal_state","color",1],"value":"249"}
+{"path":["k_papal_state","color",2],"value":"198"}
+{"path":["k_papal_state","color2",0],"value":"220"}
+{"path":["k_papal_state","color2",1],"value":"220"}
+{"path":["k_papal_state","color2",2],"value":"0"}
+{"path":["k_papal_state","definite_form"],"value":"yes"}
+{"path":["k_papal_state","ruler_uses_title_name"],"value":"@better_than_the_alternatives_score"}
+{"path":["k_papal_state","landless"],"value":"yes"}
+{"path":["k_papal_state","capital"],"value":"c_roma"}
+{"path":["k_papal_state","b_ucramund","province"],"value":"2822"}
+{"path":["k_papal_state","b_ucramund","color",0],"value":"91"}
+{"path":["k_papal_state","b_ucramund","color",1],"value":"163"}
+{"path":["k_papal_state","b_ucramund","color",2],"value":"48"}
+{"path":["k_papal_state","b_ucramund","color2",0],"value":"255"}
+{"path":["k_papal_state","b_ucramund","color2",1],"value":"255"}
+{"path":["k_papal_state","b_ucramund","color2",2],"value":"255"}
+{"path":["k_papal_state","b_ucramund","cultural_names","name_list_franconian"],"value":"cn_ucramund"}
+{"path":["k_papal_state","b_ucramund","cultural_names","name_list_saxon"],"value":"cn_ucramund"}
+{"path":["k_papal_state","b_ucramund","cultural_names","name_list_swabian"],"value":"cn_ucramund"}
+{"path":["k_papal_state","b_ucramund","cultural_names","name_list_bavarian"],"value":"cn_ucramund"}
+{"path":["k_papal_state","bad_color"],"value":"hsv{ 0.9 1 0.3 }"}
+{"path":["k_papal_state","bad_color_array",0],"value":"hsv { 0.9 1 0.3 }"}
+{"path":["k_papal_state","bad_color_array",1],"value":"hsv{ 0.73 0.8 0.4 }"}
+{"path":["k_papal_state","bad_color_array",2],"value":"hsv{ 0.77 0.8 0.6 }"}
+{"path":["k_papal_state","ai_primary_priority","add"],"value":"@always_primary_score"}
+{"path":["k_papal_state","destroy_if_invalid_heir"],"value":"yes"}
+{"path":["k_papal_state","no_automatic_claims"],"value":"@correct_culture_primary_score"}
+{"path":["k_papal_state","always_follows_primary_heir"],"value":"yes"}
+{"path":["k_papal_state","de_jure_drift_disabled"],"value":"@not_real"}
+{"path":["k_papal_state","male_names",0],"value":"Alexander"}
+{"path":["k_papal_state","male_names",1],"value":"Anastasius"}
+{"path":["k_papal_state","male_names",2],"value":"Benedictus"}
+{"path":["k_papal_state","male_names",3],"value":"Caelestinus"}
+{"path":["k_papal_state","male_names",4],"value":"Callistus"}
+{"path":["k_papal_state","male_names",5],"value":"Clemens"}
+{"path":["k_papal_state","male_names",6],"value":"Eugenius"}
+{"path":["k_papal_state","male_names",7],"value":"Leo"}
+{"path":["k_papal_state","male_names",8],"value":"Gregorius"}
+{"path":["k_papal_state","male_names",9],"value":"Hadrianus"}
+{"path":["k_papal_state","male_names",10],"value":"Honorius"}
+{"path":["k_papal_state","male_names",11],"value":"Innocentius"}
+{"path":["k_papal_state","male_names",12],"value":"Ioannes"}
+{"path":["k_papal_state","male_names",13],"value":"Lucius"}
+{"path":["k_papal_state","male_names",14],"value":"Marinus"}
+{"path":["k_papal_state","male_names",15],"value":"Martinus"}
+{"path":["k_papal_state","male_names",16],"value":"Nicolaus"}
+{"path":["k_papal_state","male_names",17],"value":"Sergius"}
+{"path":["k_papal_state","male_names",18],"value":"Silvester"}
+{"path":["k_papal_state","male_names",19],"value":"Stephanus"}
+{"path":["k_papal_state","male_names",20],"value":"Urbanus"}
+{"path":["k_papal_state","male_names",21],"value":"Victor"}
+{"path":["k_papal_state","data",0,"flag"],"value":"achievement_rags_to_riches_valid"}
+{"path":["k_papal_state","data",0,"type"],"value":"boolean"}
+{"path":["k_papal_state","data",0,"identity"],"value":"1"}
+{"path":["k_papal_state","data",2,"flag"],"value":"started_canute_the_greater_achievement"}
+{"path":["k_papal_state","data",2,"type"],"value":"boolean"}
+{"path":["k_papal_state","data",2,"identity"],"value":"1"}
