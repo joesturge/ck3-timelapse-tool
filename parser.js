@@ -73,59 +73,64 @@ const JominiStream = () => {
   const path = [];
 
   const splitterStream = split();
-  const lexingStream = splitterStream.pipe(
+  
+  const tokenizingStream = splitterStream.pipe(
     through(function write(data) {
       this.pause();
-
       lexer.reset(data, { ...lexer.save(), line: lexerLine++, col: 0 });
-
       for (let token of lexer) {
-        switch (token.type) {
-          case "key":
-            currentKey = token.value;
-            break;
-          case "value":
-            this.emit("data", {
-              path: [...path, currentKey],
-              value: token.value,
-            });
-            break;
-          case "arrayStart":
-            currentKey && path.push(currentKey);
-            path.push(0);
-            break;
-          case "objectStart":
-            if (!Number.isInteger(path.at(-1))) {
-              currentKey && path.push(currentKey);
-            }
-            break;
-          case "arrayEnd":
-            path.pop();
-            path.pop();
-            break;
-          case "objectEnd":
-            if (Number.isInteger(path.at(-1))) {
-              path.push(path.pop() + 1);
-            } else {
-              path.pop();
-            }
-            break;
-          case "arrayValue":
-            this.emit("data", { path, value: token.value });
-            if (Number.isInteger(path.at(-1))) {
-              path.push(path.pop() + 1);
-            }
-          default:
-            break;
-        }
-        
-        if (lexerLine % 10000 === 0) {
-          console.log(lexerLine)
-        }
-
-        prevToken = token;
+        this.emit("data", { type: token.type, value: token.value });
       }
 
+      if (lexerLine % 10000 === 0) {
+        console.log(lexerLine);
+      }
+
+      this.resume();
+    })
+  );
+
+  const lexingStream = tokenizingStream.pipe(
+    through(function write(data) {
+      this.pause();
+      switch (data.type) {
+        case "key":
+          currentKey = data.value;
+          break;
+        case "value":
+          this.emit("data", {
+            path: [...path, currentKey],
+            value: data.value,
+          });
+          break;
+        case "arrayStart":
+          currentKey && path.push(currentKey);
+          path.push(0);
+          break;
+        case "objectStart":
+          if (!Number.isInteger(path.at(-1))) {
+            currentKey && path.push(currentKey);
+          }
+          break;
+        case "arrayEnd":
+          path.pop();
+          path.pop();
+          break;
+        case "objectEnd":
+          if (Number.isInteger(path.at(-1))) {
+            path.push(path.pop() + 1);
+          } else {
+            path.pop();
+          }
+          break;
+        case "arrayValue":
+          this.emit("data", { path, value: data.value });
+          if (Number.isInteger(path.at(-1))) {
+            path.push(path.pop() + 1);
+          }
+        default:
+          break;
+      }
       this.resume();
     })
   );
