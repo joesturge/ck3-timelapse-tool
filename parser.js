@@ -11,7 +11,7 @@ const blank = {
   match: /[\t ]+/,
 };
 
-const JominiStream = () => {
+const JominiStream = (outputPath) => {
   const lexer = moo.states({
     descend: {
       comment,
@@ -69,11 +69,9 @@ const JominiStream = () => {
   });
 
   var lexerLine = 1;
-  var currentKey;
-  const path = [];
 
   const splitterStream = split();
-  
+
   const tokenizingStream = splitterStream.pipe(
     through(function write(data) {
       this.pause();
@@ -89,6 +87,9 @@ const JominiStream = () => {
       this.resume();
     })
   );
+
+  var currentKey;
+  const path = [];
 
   const lexingStream = tokenizingStream.pipe(
     through(function write(data) {
@@ -135,10 +136,19 @@ const JominiStream = () => {
     })
   );
 
-  return duplex(splitterStream, lexingStream);
+  const currentPath = [];
+
+  const objectStream = lexingStream.pipe(
+    through(function write(data) {
+      if (data.path.join("/") === outputPath.join("/")) {
+        this.emit("data", data.value);
+      }
+    })
+  );
+
+  return duplex(splitterStream, objectStream);
 };
 
 fs.createReadStream("test/data/sample.txt", { encoding: "utf-8" })
-  .pipe(JominiStream(["k_papal_state"]))
-  .pipe(stringify())
-  .pipe(fs.createWriteStream("test/data/sample.jsonl"));
+  .pipe(JominiStream(["k_papal_state", "ai_primary_priority", "add"]))
+  .pipe(fs.createWriteStream("test/data/sample.out"));
