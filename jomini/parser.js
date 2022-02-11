@@ -136,6 +136,8 @@ const JsonLexingStream = () => {
       data.type !== "comment" && data.type !== "blank" && data.type !== "ignore"
   );
 
+  var inArray = false;
+
   const convertToJsonStream = removeBlanksAndComments.pipe(
     through(
       function write(data) {
@@ -172,7 +174,7 @@ const JsonLexingStream = () => {
         }
         if (
           (history.at(0)?.type === "ascend" ||
-          history.at(0)?.type === "ascendComma") &&
+            history.at(0)?.type === "ascendComma") &&
           history.at(1)?.type !== "ascend" &&
           history.at(1)?.type !== "ascendComma"
         ) {
@@ -184,7 +186,18 @@ const JsonLexingStream = () => {
           ?.print();
 
         if (Boolean(output)) {
-          this.emit("data", output);
+          // This is to fix the problem where arrays can contain key value pairs
+          if (output.includes("[")) {
+            inArray = true;
+          } else if (output.includes("]") || output.includes("{")) {
+            inArray = false;
+          }
+
+          if (inArray && output === ":") {
+            this.emit("data", ",");
+          } else {
+            this.emit("data", output);
+          }
         }
 
         this.resume();
