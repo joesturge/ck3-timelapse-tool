@@ -8,29 +8,15 @@ const moment = require("moment");
 const mergeStream = require("merge-stream");
 const { Sequelize, Model, DataTypes } = require("sequelize");
 const chunker = require("stream-chunker");
+const { JominiStream } = require("./jomini/parser");
+const fs = require("fs");
 
 const parseDate = (str) => {
   return moment(str, "yyyy.MM.dd").utc().toDate();
 };
 
-const childProcess = execFile("./bin/ck3json.exe", [
-  process.env.SAVE_FILE_PATH,
-]);
-childProcess.on("exit", () => {
-  childProcess.stdout.emit("end");
-});
-const saveFileStream = childProcess.stdout
-  .pipe(
-    chunker(10000, {
-      flush: true,
-      encoding: "utf8",
-    })
-  )
-  .pipe(
-    es.mapSync((data) => {
-      return data.replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
-    })
-  );
+
+const saveFileStream = fs.createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" }).pipe(JominiStream())
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
