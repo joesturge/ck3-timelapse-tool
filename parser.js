@@ -1,4 +1,4 @@
-const { duplex, stringify, replace } = require("event-stream");
+const { duplex, stringify, replace, filterSync } = require("event-stream");
 const { through, split } = require("event-stream");
 const fs = require("fs");
 const jsesc = require("jsesc");
@@ -12,7 +12,7 @@ const blank = {
   match: /[\t ]+/,
 };
 
-const TokenizerStream = () => {
+const TokenizerStream = (maxLineLength = Infinity) => {
   const lexer = moo.states({
     descend: {
       comment,
@@ -38,7 +38,7 @@ const TokenizerStream = () => {
         value: (s) => s.trim(),
       },
       value: {
-        match: /=\s*(?:[a-zA-Z]+\s*{[^#{}]+}|"[^#={}]+"|[^#={}\s]+)/,
+        match: /=\s*(?:[a-zA-Z]+\s*{[^#{}]+}|"[^"]+"|[^#={}\s]+)/,
         value: (s) => s.replace(/["=]/g, "").trim(),
       },
       descend: {
@@ -54,7 +54,7 @@ const TokenizerStream = () => {
     array: {
       comment,
       arrayValue: {
-        match: /\s*(?:[a-zA-Z]+\s*{[^#{}]+}|"[^={}]+"|[^={}\s]+)/,
+        match: /\s*(?:[a-zA-Z]+\s*{[^#{}]+}|"[^"]+"|[^={}\s]+)/,
         value: (s) => s.replace(/"/g, "").trim(),
       },
       descend: {
@@ -73,7 +73,9 @@ const TokenizerStream = () => {
 
   const splitterStream = split();
 
-  const tokenizingStream = splitterStream.pipe(
+  const lineFilterStream = splitterStream.pipe(filterSync(data => data.length <= maxLineLength));
+
+  const tokenizingStream = lineFilterStream.pipe(
     through(function write(data) {
       this.pause();
       lexer.reset(data, { ...lexer.save(), line: lexerLine++, col: 0 });
@@ -81,7 +83,7 @@ const TokenizerStream = () => {
         this.emit("data", { type: token.type, value: token.value });
       }
 
-      if (lexerLine % 10000 === 0) {
+      if (lexerLine % 1000 === 0) {
         console.log(lexerLine);
       }
 
@@ -119,15 +121,15 @@ const JsonLexingStream = () => {
           descFlag = false;
           break;
         case "key":
-          this.emit("data", `"${jsesc(data.value)}":`);
+          this.emit("data", `${JSON.stringify(data.value)}:`);
           descFlag = false;
           break;
         case "value":
-          this.emit("data", `"${jsesc(data.value)}",`);
+          this.emit("data", `${JSON.stringify(data.value)},`);
           descFlag = false;
           break;
         case "arrayValue":
-          this.emit("data", `"${jsesc(data.value)}",`);
+          this.emit("data", `${JSON.stringify(data.value)},`);
           descFlag = false;
           break;
         case "ascend":
@@ -216,11 +218,10 @@ const ParsingStream = () => {
 
 const JominiStream = (
   tokenizer = TokenizerStream(),
-  lexer = LexingStream(),
-  parser = ParsingStream()
+  lexer = LexingStream()
 ) => {
-  tokenizer.pipe(lexer).pipe(parser);
-  return duplex(tokenizer, parser);
+  tokenizer.pipe(lexer);
+  return duplex(tokenizer, lexer);
 };
 
 module.exports = {
