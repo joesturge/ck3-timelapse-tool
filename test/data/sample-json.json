@@ -32,10 +32,17 @@
       "hsv{ 0.77 0.8 0.6 }"
     ],
     "ai_primary_priority": { "add": "@always_primary_score" },
+    "dna": "77IX+3iFd4AdlUX2AGEAbgGDAYABiACMAH4AfQGWAYMBjAFZAZkBjAFqAGoBiQF/AaUBiAGZAYwAcwGWAGYAbgBnAZkBpQGTAIwAWQGLAYQAPwGFAZUAZgGRAYEAdQCFAHIBsAGJAaABfwB2AWYBhgGYAYMBmwBmAaUBmQGhAWYBjwBeAZYAcwGLAGoABAAmASwABQEOAQoAbwAuAFgAgQHGAggAOQFtAQkACQEMATsBEgAcAC4BmwFRATMAYgAPABkAAQAhATMBDwEPATMBCQAtAS8AYwA3AQoAYwBVAT4BFgEhAA4ABgAVAJoBUgEVACwALwErAAgBNwAcAW0ADQEVABIAYAEcAAAADwATAAgAHAAaARYBBAE0ASABLgBXAecBMwAcAEwBAAEyAT0BNgAZACIDRQBvAAoBFwCWAAgAmgDpALYA/wIaAgsAJwDQAO4AFAANAKIAIwI3AAMB4ADNAFICAAIABOQEswGNAWICagN4BwAFAAemBncBrwHCCvIFtwT+AtICzAFcA1wCnwB/AH8A4gDiAAAAAAGxAbE",
     "court_data": {},
     "hello": "true",
     "court_data2": {},
     "destroy_if_invalid_heir": "yes",
+    "names": {
+      "1": "HUNGARIAN_INVASION_WAR_NAME_BASE",
+      "1": "INVASION_WAR_NAME_BASE\u0015ONCLICK:TITLE,7106 \u0015TOOLTIP:LANDED_TITLE,7106 \u0015L Montaiguese\u0015!\u0015!\u0015!\u0015ONCLICK:TITLE,1054 \u0015TOOLTIP:LANDED_TITLE,1054 \u0015L Kingdom of East Francia\u0015!\u0015!\u0015!",
+      "3": "DEPOSE_WAR_NAMEWar against the Tyranny of \u0015ONCLICK:CHARACTER,5686 \u0015TOOLTIP:CHARACTER,5686 \u0015L \u0015high Maharaja\u0015! \u0015high Amoghavarsha\u0015!\u0015!\u0015!\u0015!",
+      "1": "DEPOSE_WAR_NAMEWar against the Tyranny of \u0015ONCLICK:CHARACTER,7488 \u0015TOOLTIP:CHARACTER,7488 \u0015L \u0015high Prince\u0015! \u0015high Dil Na'od\u0015!\u0015!\u0015!\u0015!"
+    },
     "no_automatic_claims": "@correct_culture_primary_score",
     "always_follows_primary_heir": "yes",
     "de_jure_drift_disabled": "@not_real",

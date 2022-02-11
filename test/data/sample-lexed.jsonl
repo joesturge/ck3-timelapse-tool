@@ -30,8 +30,13 @@
 {"path":["k_papal_state","bad_color_array",1],"value":"hsv{ 0.73 0.8 0.4 }"}
 {"path":["k_papal_state","bad_color_array",2],"value":"hsv{ 0.77 0.8 0.6 }"}
 {"path":["k_papal_state","ai_primary_priority","add"],"value":"@always_primary_score"}
+{"path":["k_papal_state","dna"],"value":"77IX+3iFd4AdlUX2AGEAbgGDAYABiACMAH4AfQGWAYMBjAFZAZkBjAFqAGoBiQF/AaUBiAGZAYwAcwGWAGYAbgBnAZkBpQGTAIwAWQGLAYQAPwGFAZUAZgGRAYEAdQCFAHIBsAGJAaABfwB2AWYBhgGYAYMBmwBmAaUBmQGhAWYBjwBeAZYAcwGLAGoABAAmASwABQEOAQoAbwAuAFgAgQHGAggAOQFtAQkACQEMATsBEgAcAC4BmwFRATMAYgAPABkAAQAhATMBDwEPATMBCQAtAS8AYwA3AQoAYwBVAT4BFgEhAA4ABgAVAJoBUgEVACwALwErAAgBNwAcAW0ADQEVABIAYAEcAAAADwATAAgAHAAaARYBBAE0ASABLgBXAecBMwAcAEwBAAEyAT0BNgAZACIDRQBvAAoBFwCWAAgAmgDpALYA/wIaAgsAJwDQAO4AFAANAKIAIwI3AAMB4ADNAFICAAIABOQEswGNAWICagN4BwAFAAemBncBrwHCCvIFtwT+AtICzAFcA1wCnwB/AH8A4gDiAAAAAAGxAbE"}
 {"path":["k_papal_state","hello"],"value":"true"}
 {"path":["k_papal_state","destroy_if_invalid_heir"],"value":"yes"}
+{"path":["k_papal_state","names","1"],"value":"HUNGARIAN_INVASION_WAR_NAME_BASE"}
+{"path":["k_papal_state","names","1"],"value":"INVASION_WAR_NAME_BASE\u0015ONCLICK:TITLE,7106 \u0015TOOLTIP:LANDED_TITLE,7106 \u0015L Montaiguese\u0015!\u0015!\u0015!\u0015ONCLICK:TITLE,1054 \u0015TOOLTIP:LANDED_TITLE,1054 \u0015L Kingdom of East Francia\u0015!\u0015!\u0015!"}
+{"path":["k_papal_state","names","3"],"value":"DEPOSE_WAR_NAMEWar against the Tyranny of \u0015ONCLICK:CHARACTER,5686 \u0015TOOLTIP:CHARACTER,5686 \u0015L \u0015high Maharaja\u0015! \u0015high Amoghavarsha\u0015!\u0015!\u0015!\u0015!"}
+{"path":["k_papal_state","names","1"],"value":"DEPOSE_WAR_NAMEWar against the Tyranny of \u0015ONCLICK:CHARACTER,7488 \u0015TOOLTIP:CHARACTER,7488 \u0015L \u0015high Prince\u0015! \u0015high Dil Na'od\u0015!\u0015!\u0015!\u0015!"}
 {"path":["k_papal_state","no_automatic_claims"],"value":"@correct_culture_primary_score"}
 {"path":["k_papal_state","always_follows_primary_heir"],"value":"yes"}
 {"path":["k_papal_state","de_jure_drift_disabled"],"value":"@not_real"}

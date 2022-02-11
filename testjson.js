@@ -6,6 +6,5 @@ const JSONStream = require("JSONStream");
 
 fs.createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" })
   .pipe(JominiStream())
-//   .pipe(JSONStream.parse(["dead_unprunable", { emitKey: true }]))
   .pipe(stringify())
   .pipe(fs.createWriteStream("hello.jsonl"))

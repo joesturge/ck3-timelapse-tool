@@ -103,6 +103,8 @@
 {"type":"value","value":"@always_primary_score"}
 {"type":"objectEnd","value":""}
 {"type":"ascend","value":"\t}"}
+{"type":"key","value":"dna"}
+{"type":"value","value":"77IX+3iFd4AdlUX2AGEAbgGDAYABiACMAH4AfQGWAYMBjAFZAZkBjAFqAGoBiQF/AaUBiAGZAYwAcwGWAGYAbgBnAZkBpQGTAIwAWQGLAYQAPwGFAZUAZgGRAYEAdQCFAHIBsAGJAaABfwB2AWYBhgGYAYMBmwBmAaUBmQGhAWYBjwBeAZYAcwGLAGoABAAmASwABQEOAQoAbwAuAFgAgQHGAggAOQFtAQkACQEMATsBEgAcAC4BmwFRATMAYgAPABkAAQAhATMBDwEPATMBCQAtAS8AYwA3AQoAYwBVAT4BFgEhAA4ABgAVAJoBUgEVACwALwErAAgBNwAcAW0ADQEVABIAYAEcAAAADwATAAgAHAAaARYBBAE0ASABLgBXAecBMwAcAEwBAAEyAT0BNgAZACIDRQBvAAoBFwCWAAgAmgDpALYA/wIaAgsAJwDQAO4AFAANAKIAIwI3AAMB4ADNAFICAAIABOQEswGNAWICagN4BwAFAAemBncBrwHCCvIFtwT+AtICzAFcA1wCnwB/AH8A4gDiAAAAAAGxAbE"}
 {"type":"key","value":"court_data"}
 {"type":"descend","value":"= {"}
 {"type":"blank","value":"\t\t"}
@@ -114,6 +116,19 @@
 {"type":"ascend","value":"\t}"}
 {"type":"key","value":"destroy_if_invalid_heir"}
 {"type":"value","value":"yes"}
+{"type":"key","value":"names"}
+{"type":"descend","value":"={"}
+{"type":"objectStart","value":""}
+{"type":"key","value":"1"}
+{"type":"value","value":"HUNGARIAN_INVASION_WAR_NAME_BASE"}
+{"type":"key","value":"1"}
+{"type":"value","value":"INVASION_WAR_NAME_BASE\u0015ONCLICK:TITLE,7106 \u0015TOOLTIP:LANDED_TITLE,7106 \u0015L Montaiguese\u0015!\u0015!\u0015!\u0015ONCLICK:TITLE,1054 \u0015TOOLTIP:LANDED_TITLE,1054 \u0015L Kingdom of East Francia\u0015!\u0015!\u0015!"}
+{"type":"key","value":"3"}
+{"type":"value","value":"DEPOSE_WAR_NAMEWar against the Tyranny of \u0015ONCLICK:CHARACTER,5686 \u0015TOOLTIP:CHARACTER,5686 \u0015L \u0015high Maharaja\u0015! \u0015high Amoghavarsha\u0015!\u0015!\u0015!\u0015!"}
+{"type":"key","value":"1"}
+{"type":"value","value":"DEPOSE_WAR_NAMEWar against the Tyranny of \u0015ONCLICK:CHARACTER,7488 \u0015TOOLTIP:CHARACTER,7488 \u0015L \u0015high Prince\u0015! \u0015high Dil Na'od\u0015!\u0015!\u0015!\u0015!"}
+{"type":"objectEnd","value":""}
+{"type":"ascend","value":"\t}"}
 {"type":"key","value":"no_automatic_claims"}
 {"type":"value","value":"@correct_culture_primary_score"}
 {"type":"comment","value":"c_freiberg = {"}
