@@ -15,8 +15,7 @@ const parseDate = (str) => {
   return moment(str, "yyyy.MM.dd").utc().toDate();
 };
 
-
-const saveFileStream = fs.createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" }).pipe(JominiStream())
+//const saveFileStream = fs.createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" }).pipe(JominiStream())
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
@@ -58,7 +57,8 @@ const insertAllegiance = (transaction) =>
   const populateAllegiancesTransaction = await sequelize.transaction();
 
   // Generate past title allegiances
-  const pastAllegiances = saveFileStream
+  fs.createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" })
+    .pipe(JominiStream())
     .pipe(JSONStream.parse(["dead_unprunable", { emitKey: true }]))
     .pipe(
       es.mapSync((data) => {
@@ -74,27 +74,27 @@ const insertAllegiance = (transaction) =>
           };
         }
       })
-    );
+    ).pipe(insertAllegiance(populateAllegiancesTransaction))
+    .on("end", async () => await populateAllegiancesTransaction.commit());;
 
   // Generate current title allegiance
-  const currentAllegiances = saveFileStream
-    .pipe(
-      JSONStream.parse(["landed_titles", "landed_titles", { emitKey: true }])
-    )
-    .pipe(
-      es.mapSync((data, callback) => {
-        const liegeTitle = data?.value?.de_facto_liege;
-        const title = data?.key;
+  // const currentAllegiances = saveFileStream
+  //   .pipe(
+  //     JSONStream.parse(["landed_titles", "landed_titles", { emitKey: true }])
+  //   )
+  //   .pipe(
+  //     es.mapSync((data, callback) => {
+  //       const liegeTitle = data?.value?.de_facto_liege;
+  //       const title = data?.key;
 
-        return {
-          endDate: new Date(1453, 1, 1),
-          parent: liegeTitle === 0 || liegeTitle ? liegeTitle : title,
-          titles: title ? [title] : [],
-        };
-      })
-    );
+  //       return {
+  //         endDate: new Date(1453, 1, 1),
+  //         parent: liegeTitle === 0 || liegeTitle ? liegeTitle : title,
+  //         titles: title ? [title] : [],
+  //       };
+  //     })
+  //   );
 
-  const output = mergeStream(currentAllegiances, pastAllegiances)
-    .pipe(insertAllegiance(populateAllegiancesTransaction))
-    .on("end", async () => await populateAllegiancesTransaction.commit());
+  // const output = mergeStream(currentAllegiances, pastAllegiances)
+    
 })();
