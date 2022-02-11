@@ -33,6 +33,7 @@ const TokenizerStream = () => {
       match: /\s*#.*$/,
       value: (s) => s.replace("#", "").trim(),
     },
+    ignore: /^SAV.*$/,
     value: {
       match: /\s*(?:[a-zA-Z]+\s*{[^{}]+}|"[^"]+"|[^#={}\s]+)/,
       value: (s) => s.replace(/["]/g, "").trim(),
@@ -155,7 +156,8 @@ const JsonLexingStream = () => {
   ];
 
   const removeBlanksAndComments = filterSync(
-    (data) => data.type !== "comment" && data.type !== "blank"
+    (data) =>
+      data.type !== "comment" && data.type !== "blank" && data.type !== "ignore"
   );
 
   const convertToJsonStream = removeBlanksAndComments.pipe(
