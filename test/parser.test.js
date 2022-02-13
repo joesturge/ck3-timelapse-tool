@@ -54,7 +54,7 @@ test("Can tokenize raw input", async () => {
   });
 
   // WHEN piping it through the tokenizer
-  const result = await getStreamAsString(rawInput.pipe(TokenizerStream()).pipe(JsonLexingStream()));
+  const result = await getStreamItems(rawInput.pipe(TokenizerStream()));
 
   // THEN the output is correct
   const expected = await getStreamItems(
@@ -63,87 +63,23 @@ test("Can tokenize raw input", async () => {
       .pipe(split())
       .pipe(parse())
   );
-  writeActualString(result, "sample-token.json");
+  writeActual(result, "sample-token.jsonl");
   expect(result).toEqual(expected);
 });
 
-// test("Can lex token stream", async () => {
-//   // GIVEN an token input stream
-//   const tokenInput = fs.createReadStream("test/data/sample-token.jsonl", {
-//     encoding: "utf-8",
-//   });
+test("Can convert token stream to raw json", async () => {
+  // GIVEN an raw input stream
+  const tokenInput = fs.createReadStream("test/data/sample-token.jsonl", {
+    encoding: "utf-8",
+  });
 
-//   // WHEN piping it through the lexer
-//   const result = await getStreamItems(
-//     tokenInput.pipe(split()).pipe(parse()).pipe(LexingStream())
-//   );
+  // WHEN piping it through the json lexer
+  const result = await getStreamAsString(
+    tokenInput.pipe(split()).pipe(parse()).pipe(JsonLexingStream())
+  );
 
-//   // THEN the output is correct
-//   const expected = await getStreamItems(
-//     fs
-//       .createReadStream("test/data/sample-lexed.jsonl")
-//       .pipe(split())
-//       .pipe(parse())
-//   );
-//   writeActual(result, "sample-lexed.jsonl");
-//   expect(result).toEqual(expected);
-// });
+  const expected = JSON.parse(fs.readFileSync("test/data/sample-parsed.json"));
 
-// test("Can parse lexed stream", async () => {
-//   // GIVEN an lexed input stream
-//   const rawInput = fs.createReadStream("test/data/sample-lexed.jsonl", {
-//     encoding: "utf-8",
-//   });
-
-//   // WHEN piping it through the parser
-//   const result = await getStreamItems(
-//     rawInput.pipe(split()).pipe(parse()).pipe(ParsingStream())
-//   );
-
-//   // THEN the output is correct
-//   const expected = await getStreamItems(
-//     fs
-//       .createReadStream("test/data/sample-parsed.jsonl")
-//       .pipe(split())
-//       .pipe(parse())
-//   );
-//   writeActual(result, "sample-parsed.jsonl");
-//   expect(result).toEqual(expected);
-// });
-
-// test("Can convert raw Jomini text stream to object stream", async () => {
-//   // GIVEN an raw input stream
-//   const rawInput = fs.createReadStream("test/data/sample-raw.txt", {
-//     encoding: "utf-8",
-//   });
-
-//   // WHEN piping it through the stream
-//   const result = await getStreamItems(rawInput.pipe(JominiStream()));
-
-//   // THEN the output is correct
-//   const expected = await getStreamItems(
-//     fs
-//       .createReadStream("test/data/sample-parsed.jsonl")
-//       .pipe(split())
-//       .pipe(parse())
-//   );
-//   writeActual(result, "sample-parsed.jsonl");
-//   expect(result).toEqual(expected);
-// });
-
-// test("Can convert token stream to raw json", async () => {
-//   // GIVEN an raw input stream
-//   const tokenInput = fs.createReadStream("test/data/sample-token.jsonl", {
-//     encoding: "utf-8",
-//   });
-
-//   // WHEN piping it through the json lexer
-//   const result = await getStreamAsString(
-//     tokenInput.pipe(split()).pipe(parse()).pipe(JsonLexingStream())
-//   );
-
-//   const expected = JSON.parse(fs.readFileSync("test/data/sample-json.json"));
-
-//   writeActualString(result, "sample-json.json");
-//   expect(JSON.parse(result)).toEqual(expected);
-// });
+  writeActualString(result, "sample-json.json");
+  expect(JSON.parse(result)).toEqual(expected);
+});

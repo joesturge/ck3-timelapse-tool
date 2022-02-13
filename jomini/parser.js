@@ -30,9 +30,9 @@ const TokenizerStream = () => {
     through(
       function write(data) {
         this.pause();
-        if (lexerLine % 100000 === 0) {
-          console.log(lexerLine);
-        }
+        // if (lexerLine % 100000 === 0) {
+        //   console.log(lexerLine);
+        // }
         if (lexerLine === 0) {
           this.emit("data", { type: "descend" });
         }

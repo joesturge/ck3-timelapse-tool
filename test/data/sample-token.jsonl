@@ -1,135 +1,165 @@
-{"type":"objectStart","value":""}
-{"type":"key","value":"@correct_culture_primary_score"}
+{"type":"descend"}
+{"type":"value","value":"@correct_culture_primary_score"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"yes"}
-{"type":"key","value":"@better_than_the_alternatives_score"}
+{"type":"value","value":"@better_than_the_alternatives_score"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"no no"}
-{"type":"key","value":"@always_primary_score"}
+{"type":"value","value":"@always_primary_score"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"1000"}
 {"type":"comment","value":"EMPIRES"}
 {"type":"comment","value":"special titles"}
-{"type":"key","value":"k_papal_state"}
-{"type":"descend","value":"= {"}
-{"type":"objectStart","value":""}
-{"type":"key","value":"color"}
-{"type":"descend","value":"= { "}
-{"type":"arrayStart","value":""}
-{"type":"arrayValue","value":"255"}
-{"type":"arrayValue","value":"249"}
-{"type":"arrayValue","value":"198"}
-{"type":"arrayEnd","value":""}
+{"type":"value","value":"k_papal_state"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"value","value":"color"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"value","value":"255"}
+{"type":"value","value":"249"}
+{"type":"value","value":"198"}
 {"type":"ascend","value":" }"}
-{"type":"key","value":"color2"}
-{"type":"descend","value":"= { "}
-{"type":"arrayStart","value":""}
-{"type":"arrayValue","value":"220"}
-{"type":"arrayValue","value":"220"}
-{"type":"arrayValue","value":"0"}
-{"type":"arrayEnd","value":""}
+{"type":"value","value":"color2"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"value","value":"220"}
+{"type":"value","value":"220"}
+{"type":"value","value":"0"}
 {"type":"ascend","value":" }"}
-{"type":"key","value":"definite_form"}
+{"type":"value","value":"definite_form"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"yes"}
-{"type":"key","value":"ruler_uses_title_name"}
+{"type":"value","value":"ruler_uses_title_name"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"@better_than_the_alternatives_score"}
-{"type":"key","value":"landless"}
+{"type":"value","value":"landless"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"yes"}
 {"type":"blank","value":"\t"}
-{"type":"key","value":"capital"}
+{"type":"value","value":"capital"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"c_roma"}
-{"type":"key","value":"b_ucramund"}
-{"type":"descend","value":"= {\t#b_wkra"}
+{"type":"value","value":"b_ucramund"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"comment","value":"b_wkra"}
 {"type":"comment","value":"=Ueckermünde / Wkryujście"}
-{"type":"objectStart","value":""}
-{"type":"key","value":"province"}
+{"type":"value","value":"province"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"2822"}
-{"type":"key","value":"color"}
-{"type":"descend","value":"= { "}
-{"type":"arrayStart","value":""}
-{"type":"arrayValue","value":"91"}
-{"type":"arrayValue","value":"163"}
-{"type":"arrayValue","value":"48"}
-{"type":"arrayEnd","value":""}
+{"type":"value","value":"color"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"value","value":"91"}
+{"type":"value","value":"163"}
+{"type":"value","value":"48"}
 {"type":"ascend","value":" }"}
-{"type":"key","value":"color2"}
-{"type":"descend","value":"= { "}
-{"type":"arrayStart","value":""}
-{"type":"arrayValue","value":"255"}
-{"type":"arrayValue","value":"255"}
-{"type":"arrayValue","value":"255"}
-{"type":"arrayEnd","value":""}
+{"type":"value","value":"color2"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"value","value":"255"}
+{"type":"value","value":"255"}
+{"type":"value","value":"255"}
 {"type":"ascend","value":" }"}
 {"type":"blank","value":"\t\t"}
-{"type":"key","value":"cultural_names"}
-{"type":"descend","value":"= {"}
-{"type":"objectStart","value":""}
-{"type":"key","value":"name_list_franconian"}
+{"type":"value","value":"cultural_names"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"value","value":"name_list_franconian"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"cn_ucramund"}
-{"type":"key","value":"name_list_saxon"}
+{"type":"value","value":"name_list_saxon"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"cn_ucramund"}
-{"type":"key","value":"name_list_swabian"}
+{"type":"value","value":"name_list_swabian"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"cn_ucramund"}
-{"type":"key","value":"name_list_bavarian"}
+{"type":"value","value":"name_list_bavarian"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"cn_ucramund"}
-{"type":"objectEnd","value":""}
 {"type":"ascend","value":"\t\t}"}
-{"type":"objectEnd","value":""}
 {"type":"ascend","value":"\t}"}
-{"type":"key","value":"single_line_object"}
-{"type":"descend","value":"= { "}
-{"type":"objectStart","value":""}
-{"type":"key","value":"car"}
-{"type":"value","value":"yes"}
-{"type":"key","value":"train"}
-{"type":"value","value":"no"}
-{"type":"key","value":"sport"}
-{"type":"value","value":"volly ball"}
-{"type":"objectEnd","value":""}
+{"type":"blank","value":"\t"}
+{"type":"value","value":"levels"}
+{"type":"equals","value":"="}
+{"type":"descend","value":"{"}
+{"type":"value","value":"10"}
+{"type":"value","value":"0"}
+{"type":"equals","value":"="}
+{"type":"value","value":"2"}
+{"type":"value","value":"1"}
+{"type":"equals","value":"="}
+{"type":"value","value":"2"}
 {"type":"ascend","value":" }"}
-{"type":"key","value":"bad_color"}
+{"type":"value","value":"single_line_object"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"value","value":"car"}
+{"type":"equals","value":"="}
+{"type":"value","value":"yes"}
+{"type":"value","value":"train"}
+{"type":"equals","value":" ="}
+{"type":"value","value":"no"}
+{"type":"value","value":"sport"}
+{"type":"equals","value":" ="}
+{"type":"value","value":"volly ball"}
+{"type":"ascend","value":" }"}
+{"type":"value","value":"bad_color"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"hsv{ 0.9 1 0.3 }"}
 {"type":"comment","value":"hsv{ 0.73 0.8 0.4 }  #hsv{ 0.77 0.8 0.6 } #{ 143 12 125 }"}
-{"type":"key","value":"bad_color_array"}
-{"type":"descend","value":"= { "}
-{"type":"arrayStart","value":""}
-{"type":"arrayValue","value":"hsv { 0.9 1 0.3 }"}
-{"type":"arrayValue","value":"hsv{ 0.73 0.8 0.4 }"}
-{"type":"arrayValue","value":"hsv{ 0.77 0.8 0.6 }"}
-{"type":"arrayEnd","value":""}
+{"type":"value","value":"bad_color_array"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"value","value":"hsv { 0.9 1 0.3 }"}
+{"type":"value","value":"hsv{ 0.73 0.8 0.4 }"}
+{"type":"value","value":"hsv{ 0.77 0.8 0.6 }"}
 {"type":"ascend","value":" }"}
 {"type":"blank","value":"\t"}
-{"type":"key","value":"ai_primary_priority"}
-{"type":"descend","value":"= {"}
-{"type":"objectStart","value":""}
-{"type":"key","value":"add"}
+{"type":"value","value":"ai_primary_priority"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"value","value":"add"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"@always_primary_score"}
-{"type":"objectEnd","value":""}
 {"type":"ascend","value":"\t}"}
-{"type":"key","value":"dna"}
-{"type":"value","value":"77IX+3iFd4AdlUX2AGEAbgGDAYABiACMAH4AfQGWAYMBjAFZAZkBjAFqAGoBiQF/AaUBiAGZAYwAcwGWAGYAbgBnAZkBpQGTAIwAWQGLAYQAPwGFAZUAZgGRAYEAdQCFAHIBsAGJAaABfwB2AWYBhgGYAYMBmwBmAaUBmQGhAWYBjwBeAZYAcwGLAGoABAAmASwABQEOAQoAbwAuAFgAgQHGAggAOQFtAQkACQEMATsBEgAcAC4BmwFRATMAYgAPABkAAQAhATMBDwEPATMBCQAtAS8AYwA3AQoAYwBVAT4BFgEhAA4ABgAVAJoBUgEVACwALwErAAgBNwAcAW0ADQEVABIAYAEcAAAADwATAAgAHAAaARYBBAE0ASABLgBXAecBMwAcAEwBAAEyAT0BNgAZACIDRQBvAAoBFwCWAAgAmgDpALYA/wIaAgsAJwDQAO4AFAANAKIAIwI3AAMB4ADNAFICAAIABOQEswGNAWICagN4BwAFAAemBncBrwHCCvIFtwT+AtICzAFcA1wCnwB/AH8A4gDiAAAAAAGxAbE"}
-{"type":"key","value":"court_data"}
-{"type":"descend","value":"= {"}
+{"type":"value","value":"dna"}
+{"type":"equals","value":"="}
+{"type":"value","value":"77IX+3iFd4AdlUX2AGEAbgGDAYABiACMAH4AfQGWAYMBjAFZAZkBjAFqAGoBiQF/AaUBiAGZAYwAcwGWAGYAbgBnAZkBpQGTAIwAWQGLAYQAPwGFAZUAZgGRAYEAdQCFAHIBsAGJAaABfwB2AWYBhgGYAYMBmwBmAaUBmQGhAWYBjwBeAZYAcwGLAGoABAAmASwABQEOAQoAbwAuAFgAgQHGAggAOQFtAQkACQEMATsBEgAcAC4BmwFRATMAYgAPABkAAQAhATMBDwEPATMBCQAtAS8AYwA3AQoAYwBVAT4BFgEhAA4ABgAVAJoBUgEVACwALwErAAgBNwAcAW0ADQEVABIAYAEcAAAADwATAAgAHAAaARYBBAE0ASABLgBXAecBMwAcAEwBAAEyAT0BNgAZACIDRQBvAAoBFwCWAAgAmgDpALYA/wIaAgsAJwDQAO4AFAANAKIAIwI3AAMB4ADNAFICAAIABOQEswGNAWICagN4BwAFAAemBncBrwHCCvIFtwT+AtICzAFcA1wCnwB/AH8A4gDiAAAAAAGxAbE="}
+{"type":"value","value":"court_data"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
 {"type":"blank","value":"\t\t"}
 {"type":"ascend","value":"\t}"}
-{"type":"key","value":"hello"}
+{"type":"value","value":"hello"}
+{"type":"equals","value":"="}
 {"type":"value","value":"true"}
-{"type":"key","value":"court_data2"}
-{"type":"descend","value":"= {"}
+{"type":"value","value":"court_data2"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
 {"type":"ascend","value":"\t}"}
-{"type":"key","value":"destroy_if_invalid_heir"}
+{"type":"value","value":"destroy_if_invalid_heir"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"yes"}
-{"type":"key","value":"names"}
-{"type":"descend","value":"={"}
-{"type":"objectStart","value":""}
-{"type":"key","value":"1"}
+{"type":"value","value":"names"}
+{"type":"equals","value":"="}
+{"type":"descend","value":"{"}
+{"type":"value","value":"1"}
+{"type":"equals","value":"="}
 {"type":"value","value":"HUNGARIAN_INVASION_WAR_NAME_BASE"}
-{"type":"key","value":"1"}
+{"type":"value","value":"1"}
+{"type":"equals","value":"="}
 {"type":"value","value":"INVASION_WAR_NAME_BASE\u0015ONCLICK:TITLE,7106 \u0015TOOLTIP:LANDED_TITLE,7106 \u0015L Montaiguese\u0015!\u0015!\u0015!\u0015ONCLICK:TITLE,1054 \u0015TOOLTIP:LANDED_TITLE,1054 \u0015L Kingdom of East Francia\u0015!\u0015!\u0015!"}
-{"type":"key","value":"3"}
+{"type":"value","value":"3"}
+{"type":"equals","value":"="}
 {"type":"value","value":"DEPOSE_WAR_NAMEWar against the Tyranny of \u0015ONCLICK:CHARACTER,5686 \u0015TOOLTIP:CHARACTER,5686 \u0015L \u0015high Maharaja\u0015! \u0015high Amoghavarsha\u0015!\u0015!\u0015!\u0015!"}
-{"type":"key","value":"1"}
+{"type":"value","value":"1"}
+{"type":"equals","value":"="}
 {"type":"value","value":"DEPOSE_WAR_NAMEWar against the Tyranny of \u0015ONCLICK:CHARACTER,7488 \u0015TOOLTIP:CHARACTER,7488 \u0015L \u0015high Prince\u0015! \u0015high Dil Na'od\u0015!\u0015!\u0015!\u0015!"}
-{"type":"objectEnd","value":""}
 {"type":"ascend","value":"\t}"}
-{"type":"key","value":"no_automatic_claims"}
+{"type":"value","value":"no_automatic_claims"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"@correct_culture_primary_score"}
 {"type":"comment","value":"c_freiberg = {"}
 {"type":"comment","value":"color = { 177 177 177 }"}
@@ -142,71 +172,71 @@
 {"type":"comment","value":"color2 = { 255 255 255 }"}
 {"type":"comment","value":"}"}
 {"type":"comment","value":"}"}
-{"type":"key","value":"always_follows_primary_heir"}
+{"type":"value","value":"always_follows_primary_heir"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"yes"}
-{"type":"key","value":"de_jure_drift_disabled"}
+{"type":"value","value":"de_jure_drift_disabled"}
+{"type":"equals","value":" ="}
 {"type":"value","value":"@not_real"}
-{"type":"key","value":"male_names"}
-{"type":"descend","value":"= { "}
-{"type":"arrayStart","value":""}
-{"type":"arrayValue","value":"Alexander"}
-{"type":"arrayValue","value":"Anastasius"}
-{"type":"arrayValue","value":"Benedictus"}
-{"type":"arrayValue","value":"Caelestinus"}
-{"type":"arrayValue","value":"Callistus"}
-{"type":"arrayValue","value":"Clemens"}
-{"type":"arrayValue","value":"Eugenius"}
-{"type":"arrayValue","value":"Leo"}
-{"type":"arrayValue","value":"Gregorius"}
-{"type":"arrayValue","value":"Hadrianus"}
-{"type":"arrayValue","value":"Honorius"}
-{"type":"arrayValue","value":"Innocentius"}
-{"type":"arrayValue","value":"Ioannes"}
-{"type":"arrayValue","value":"Lucius"}
-{"type":"arrayValue","value":"Marinus"}
-{"type":"arrayValue","value":"Martinus"}
-{"type":"arrayValue","value":"Nicolaus"}
-{"type":"arrayValue","value":"Sergius"}
-{"type":"arrayValue","value":"Silvester"}
-{"type":"arrayValue","value":"Stephanus"}
-{"type":"arrayValue","value":"Urbanus"}
-{"type":"arrayValue","value":"Victor"}
-{"type":"arrayEnd","value":""}
+{"type":"value","value":"male_names"}
+{"type":"equals","value":" ="}
+{"type":"descend","value":" {"}
+{"type":"value","value":"Alexander"}
+{"type":"value","value":"Anastasius"}
+{"type":"value","value":"Benedictus"}
+{"type":"value","value":"Caelestinus"}
+{"type":"value","value":"Callistus"}
+{"type":"value","value":"Clemens"}
+{"type":"value","value":"Eugenius"}
+{"type":"value","value":"Leo"}
+{"type":"value","value":"Gregorius"}
+{"type":"value","value":"Hadrianus"}
+{"type":"value","value":"Honorius"}
+{"type":"value","value":"Innocentius"}
+{"type":"value","value":"Ioannes"}
+{"type":"value","value":"Lucius"}
+{"type":"value","value":"Marinus"}
+{"type":"value","value":"Martinus"}
+{"type":"value","value":"Nicolaus"}
+{"type":"value","value":"Sergius"}
+{"type":"value","value":"Silvester"}
+{"type":"value","value":"Stephanus"}
+{"type":"value","value":"Urbanus"}
+{"type":"value","value":"Victor"}
 {"type":"ascend","value":" }"}
-{"type":"key","value":"data"}
-{"type":"descend","value":"={ "}
-{"type":"arrayStart","value":""}
+{"type":"value","value":"data"}
+{"type":"equals","value":"="}
 {"type":"descend","value":"{"}
-{"type":"objectStart","value":""}
-{"type":"key","value":"flag"}
+{"type":"descend","value":" {"}
+{"type":"value","value":"flag"}
+{"type":"equals","value":"="}
 {"type":"value","value":"achievement_rags_to_riches_valid"}
-{"type":"key","value":"data"}
-{"type":"descend","value":"={"}
-{"type":"objectStart","value":""}
-{"type":"key","value":"type"}
+{"type":"value","value":"data"}
+{"type":"equals","value":"="}
+{"type":"descend","value":"{"}
+{"type":"value","value":"type"}
+{"type":"equals","value":"="}
 {"type":"value","value":"boolean"}
-{"type":"key","value":"identity"}
+{"type":"value","value":"identity"}
+{"type":"equals","value":"="}
 {"type":"value","value":"1"}
-{"type":"objectEnd","value":""}
 {"type":"ascend","value":"\t\t\t}"}
-{"type":"objectEnd","value":""}
 {"type":"ascend","value":"\t\t}"}
 {"type":"descend","value":" {"}
-{"type":"objectStart","value":""}
-{"type":"key","value":"flag"}
+{"type":"value","value":"flag"}
+{"type":"equals","value":"="}
 {"type":"value","value":"started_canute_the_greater_achievement"}
-{"type":"key","value":"data"}
-{"type":"descend","value":"={"}
-{"type":"objectStart","value":""}
-{"type":"key","value":"type"}
+{"type":"value","value":"data"}
+{"type":"equals","value":"="}
+{"type":"descend","value":"{"}
+{"type":"value","value":"type"}
+{"type":"equals","value":"="}
 {"type":"value","value":"boolean"}
-{"type":"key","value":"identity"}
+{"type":"value","value":"identity"}
+{"type":"equals","value":"="}
 {"type":"value","value":"1"}
-{"type":"objectEnd","value":""}
 {"type":"ascend","value":"\t\t\t}"}
-{"type":"objectEnd","value":""}
 {"type":"ascend","value":"\t\t}"}
-{"type":"arrayEnd","value":""}
 {"type":"ascend","value":"\t}"}
-{"type":"objectEnd","value":""}
 {"type":"ascend","value":"}"}
+{"type":"ascend"}
