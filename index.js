@@ -13,13 +13,15 @@ const parseDate = (str) => {
   return Boolean(str) ? moment(str, "yyyy.MM.dd").utc().toDate() : null;
 };
 
+const rgbRegex = /^\s*rgb\s*{\s*(\d+)\s*(\d+)\s*(\d+)\s*}\s*$/;
 const parseColor = (obj) => {
   if (Boolean(obj)) {
-    if (typeof obj === "string" || obj instanceof String) {
-      return null;
+    if ((typeof obj === "string" || obj instanceof String) && rgbRegex.test(obj)) {
+      return Color.rgb(rgbRegex.exec(obj).slice(1, 4).map(str => parseInt(str)))?.hex();
     }
     return Color.rgb(obj)?.hex();
   }
+  return null;
 };
 
 const sequelize = new Sequelize({
@@ -57,8 +59,9 @@ const endDate = parseDate("1453.1.1");
           const title = {
             id: data?.key,
             key: data?.value?.key,
-            name: data?.value?.Name,
+            name: data?.value?.name,
             deFactoLiege: data?.value?.de_facto_liege,
+            deJureLiege: data?.value?.de_jure_liege,
             rank: data?.value?.key?.charAt(0)?.toUpperCase(),
             color: parseColor(data?.value?.color),
           };

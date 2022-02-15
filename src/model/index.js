@@ -49,6 +49,9 @@ function BuildModels(sequelize) {
     deFactoLiege: {
       type: DataTypes.INTEGER,
     },
+    deJureLiege: {
+      type: DataTypes.INTEGER,
+    },
     color: {
       type: DataTypes.STRING,
     },
