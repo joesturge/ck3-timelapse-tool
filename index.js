@@ -1,21 +1,26 @@
 require("dotenv").config({ path: require("find-config")(".env") });
 
-const { execFile } = require("child_process");
-const path = require("path");
 const JSONStream = require("JSONStream");
 const es = require("event-stream");
 const moment = require("moment");
-const mergeStream = require("merge-stream");
-const { Sequelize, Model, DataTypes } = require("sequelize");
-const chunker = require("stream-chunker");
+const { Sequelize } = require("sequelize");
 const { JominiStream } = require("./jomini/parser");
 const fs = require("fs");
+const BuildModels = require("./src/model");
+const Color = require("color");
 
 const parseDate = (str) => {
-  return moment(str, "yyyy.MM.dd").utc().toDate();
+  return Boolean(str) ? moment(str, "yyyy.MM.dd").utc().toDate() : null;
 };
 
-//const saveFileStream = fs.createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" }).pipe(JominiStream())
+const parseColor = (obj) => {
+  if (Boolean(obj)) {
+    if (typeof obj === "string" || obj instanceof String) {
+      return null;
+    }
+    return Color.rgb(obj)?.hex();
+  }
+};
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
@@ -23,78 +28,99 @@ const sequelize = new Sequelize({
   logging: false,
 });
 
-class Allegiance extends Model {}
-Allegiance.init(
-  {
-    endDate: DataTypes.DATE,
-    top: DataTypes.BOOLEAN,
-    parent: DataTypes.INTEGER,
-    titleId: DataTypes.INTEGER,
-  },
-  { sequelize, modelName: "allegiance" }
-);
-
-const insertAllegiance = (transaction) =>
-  es.mapSync(async (data) => {
-    data.titles.forEach(async (title) => {
-      await Allegiance.create(
-        {
-          endDate: data.endDate,
-          top: data.parent === title,
-          parent: data.parent,
-          titleId: title,
-        },
-        { transaction }
-      );
-    });
-  });
+const endDate = parseDate("1453.1.1");
 
 (async () => {
-  await sequelize.sync();
+  const { Person, Title, TitleHistory } = BuildModels(sequelize);
 
-  await Allegiance.truncate();
+  await sequelize.sync({ alter: true });
 
-  const populateAllegiancesTransaction = await sequelize.transaction();
+  const transaction = await sequelize.transaction();
+
+  await sequelize.truncate({ transaction });
 
   // Generate past title allegiances
-  fs.createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" })
-    .pipe(JominiStream())
-    .pipe(JSONStream.parse(["dead_unprunable", { emitKey: true }]))
-    .pipe(
-      es.mapSync((data) => {
-        const date = parseDate(data?.value?.dead_data?.date);
-        const domain = data?.value?.dead_data?.domain || [];
-        const liegeTitle = data?.value?.dead_data?.liege_title;
+  const saveFileStream = fs
+    .createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" })
+    .pipe(JominiStream());
 
-        if (date && domain.length > 0 && (liegeTitle || liegeTitle === 0)) {
-          return {
-            endDate: date,
-            parent: liegeTitle,
-            titles: domain,
+    saveFileStream.pause();
+
+  es.merge(
+    saveFileStream
+      .pipe(
+        JSONStream.parse(["landed_titles", "landed_titles", { emitKey: true }])
+      )
+      .pipe(
+        es.through(async function write(data) {
+          this.pause();
+          const title = {
+            id: data?.key,
+            key: data?.value?.key,
+            name: data?.value?.Name,
+            deFactoLiege: data?.value?.de_facto_liege,
+            rank: data?.value?.key?.charAt(0)?.toUpperCase(),
+            color: parseColor(data?.value?.color),
           };
-        }
-      })
-    ).pipe(insertAllegiance(populateAllegiancesTransaction))
-    .on("end", async () => await populateAllegiancesTransaction.commit());;
 
-  // Generate current title allegiance
-  // const currentAllegiances = saveFileStream
-  //   .pipe(
-  //     JSONStream.parse(["landed_titles", "landed_titles", { emitKey: true }])
-  //   )
-  //   .pipe(
-  //     es.mapSync((data, callback) => {
-  //       const liegeTitle = data?.value?.de_facto_liege;
-  //       const title = data?.key;
+          if (Boolean(title.key)) {
+            const waitFor = [Title.create(title, { transaction })];
+            const history = data?.value?.history;
 
-  //       return {
-  //         endDate: new Date(1453, 1, 1),
-  //         parent: liegeTitle === 0 || liegeTitle ? liegeTitle : title,
-  //         titles: title ? [title] : [],
-  //       };
-  //     })
-  //   );
+            if (Boolean(history)) {
+              const keys = Object.keys(history);
+              for (var i = 0; i < keys.length; i++) {
+                const item = history[keys.at(i)];
+                const nextKey = i + 1 < keys.length ? keys.at(i + 1) : null;
+                const holder =
+                  typeof item === "string" || item instanceof String
+                    ? item
+                    : item?.holder;
 
-  // const output = mergeStream(currentAllegiances, pastAllegiances)
-    
+                if (Boolean(holder)) {
+                  const titleHistory = {
+                    title: data?.key,
+                    holder,
+                    startDate: parseDate(keys[i]),
+                    endDate: Boolean(nextKey) ? parseDate(nextKey) : endDate,
+                  };
+                  waitFor.push(
+                    TitleHistory.create(titleHistory, { transaction })
+                  );
+                }
+              }
+            }
+
+            await Promise.all(waitFor);
+          }
+
+          this.resume();
+        })
+      ),
+    saveFileStream
+      .pipe(JSONStream.parse([/dead_unprunable|living/, { emitKey: true }]))
+      .pipe(
+        es.through(async function write(data) {
+          this.pause();
+          const person = {
+            id: data?.key,
+            firstName: data?.value?.first_name,
+            dateOfBirth: parseDate(data?.value?.birth),
+            dateOfDeath: parseDate(data?.value?.dead_data?.date),
+            sex: data?.value?.female === "yes" ? "Female" : "Male",
+            primaryTitle:
+              data?.value?.dead_data?.domain?.at(0) ||
+              data?.value?.landed_data?.domain?.at(0),
+            liege:
+              data?.value?.dead_data?.liege === data?.key
+                ? null
+                : data?.value?.dead_data?.liege,
+          };
+          await Person.create(person, { transaction });
+          this.resume();
+        })
+      )
+  ).on("end", async () => await transaction.commit());
+
+  saveFileStream.resume();
 })();

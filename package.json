@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "chunker": "^0.2.1",
+    "cloneable-readable": "^2.1.0",
+    "color": "^4.2.1",
     "dotenv": "^16.0.0",
     "event-stream": "^4.0.1",
     "find-config": "^1.0.0",

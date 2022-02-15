@@ -1,6 +1,5 @@
 const { duplex, filterSync, mapSync } = require("event-stream");
 const { through, split } = require("event-stream");
-const chunker = require("stream-chunker");
 const moo = require("moo");
 
 const TokenizerStream = () => {
@@ -30,9 +29,9 @@ const TokenizerStream = () => {
     through(
       function write(data) {
         this.pause();
-        // if (lexerLine % 100000 === 0) {
-        //   console.log(lexerLine);
-        // }
+        if (lexerLine % 100000 === 0) {
+          console.log(lexerLine);
+        }
         if (lexerLine === 0) {
           this.emit("data", { type: "descend" });
         }
