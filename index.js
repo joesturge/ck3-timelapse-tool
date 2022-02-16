@@ -16,8 +16,16 @@ const parseDate = (str) => {
 const rgbRegex = /^\s*rgb\s*{\s*(\d+)\s*(\d+)\s*(\d+)\s*}\s*$/;
 const parseColor = (obj) => {
   if (Boolean(obj)) {
-    if ((typeof obj === "string" || obj instanceof String) && rgbRegex.test(obj)) {
-      return Color.rgb(rgbRegex.exec(obj).slice(1, 4).map(str => parseInt(str)))?.hex();
+    if (
+      (typeof obj === "string" || obj instanceof String) &&
+      rgbRegex.test(obj)
+    ) {
+      return Color.rgb(
+        rgbRegex
+          .exec(obj)
+          .slice(1, 4)
+          .map((str) => parseInt(str))
+      )?.hex();
     }
     return Color.rgb(obj)?.hex();
   }
@@ -46,7 +54,7 @@ const endDate = parseDate("1453.1.1");
     .createReadStream("udonen_1453_01_01_debug.ck3", { encoding: "utf-8" })
     .pipe(JominiStream());
 
-    saveFileStream.pause();
+  saveFileStream.pause();
 
   es.merge(
     saveFileStream
@@ -118,6 +126,10 @@ const endDate = parseDate("1453.1.1");
               data?.value?.dead_data?.liege === data?.key
                 ? null
                 : data?.value?.dead_data?.liege,
+            liegeTitle:
+              data?.value?.dead_data?.liege === data?.key
+                ? null
+                : data?.value?.dead_data?.liege_title,
           };
           await Person.create(person, { transaction });
           this.resume();

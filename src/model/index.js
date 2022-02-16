@@ -31,6 +31,9 @@ function BuildModels(sequelize) {
     liege: {
       type: DataTypes.INTEGER,
     },
+    liegeTitle: {
+      type: DataTypes.INTEGER,
+    },
   });
 
   const Title = sequelize.define("Title", {
@@ -53,6 +56,9 @@ function BuildModels(sequelize) {
       type: DataTypes.INTEGER,
     },
     color: {
+      type: DataTypes.STRING,
+    },
+    pngColor: {
       type: DataTypes.STRING,
     },
     rank: {
