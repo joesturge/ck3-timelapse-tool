@@ -129,11 +129,17 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# timelapse files
+timelapse/
+
 # SqlLite
 *.db*
 
 # Executables
 bin/
 
-# CK3 Savefiles
+# CK3 files
 *.ck3
+*titles.txt
+*.png
+*.csv

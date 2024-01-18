@@ -1,0 +1,98 @@
+@correct_culture_primary_score = yes
+@better_than_the_alternatives_score = "no no"
+@always_primary_score = 1000
+
+# EMPIRES
+
+# special titles
+k_papal_state = {
+	color = { 255 249 198 }
+	color2 = { 220 220 0 }
+	definite_form = yes
+	ruler_uses_title_name = @better_than_the_alternatives_score
+	landless = yes
+	
+	capital = c_roma
+
+
+	b_ucramund = {	#b_wkra
+	# =Ueckermünde / Wkryujście
+		province = 2822
+
+		color = { 91 163 48 }
+		color2 = { 255 255 255 }
+		
+		cultural_names = {
+			name_list_franconian = cn_ucramund
+			name_list_saxon = cn_ucramund
+			name_list_swabian = cn_ucramund
+			name_list_bavarian = cn_ucramund
+		}
+	}
+
+	
+	levels={ 10 0=2 1=2 }
+
+	single_line_object = { car=yes train = no sport = "volly ball" }
+
+	bad_color =  hsv{ 0.9 1 0.3 } #hsv{ 0.73 0.8 0.4 }  #hsv{ 0.77 0.8 0.6 } #{ 143 12 125 }
+	bad_color_array = { hsv { 0.9 1 0.3 } hsv{ 0.73 0.8 0.4 }  hsv{ 0.77 0.8 0.6 } }
+	
+	ai_primary_priority = {
+		add = @always_primary_score
+	}
+
+	dna="77IX+3iFd4AdlUX2AGEAbgGDAYABiACMAH4AfQGWAYMBjAFZAZkBjAFqAGoBiQF/AaUBiAGZAYwAcwGWAGYAbgBnAZkBpQGTAIwAWQGLAYQAPwGFAZUAZgGRAYEAdQCFAHIBsAGJAaABfwB2AWYBhgGYAYMBmwBmAaUBmQGhAWYBjwBeAZYAcwGLAGoABAAmASwABQEOAQoAbwAuAFgAgQHGAggAOQFtAQkACQEMATsBEgAcAC4BmwFRATMAYgAPABkAAQAhATMBDwEPATMBCQAtAS8AYwA3AQoAYwBVAT4BFgEhAA4ABgAVAJoBUgEVACwALwErAAgBNwAcAW0ADQEVABIAYAEcAAAADwATAAgAHAAaARYBBAE0ASABLgBXAecBMwAcAEwBAAEyAT0BNgAZACIDRQBvAAoBFwCWAAgAmgDpALYA/wIaAgsAJwDQAO4AFAANAKIAIwI3AAMB4ADNAFICAAIABOQEswGNAWICagN4BwAFAAemBncBrwHCCvIFtwT+AtICzAFcA1wCnwB/AH8A4gDiAAAAAAGxAbE="
+
+
+
+	court_data = {
+		
+	}
+
+	hello=true
+
+	court_data2 = {
+	}
+
+	destroy_if_invalid_heir = "yes"
+	names={
+		1="HUNGARIAN_INVASION_WAR_NAME_BASE"
+		1="INVASION_WAR_NAME_BASEONCLICK:TITLE,7106 TOOLTIP:LANDED_TITLE,7106 L Montaiguese!!!ONCLICK:TITLE,1054 TOOLTIP:LANDED_TITLE,1054 L Kingdom of East Francia!!!"
+		3="DEPOSE_WAR_NAMEWar against the Tyranny of ONCLICK:CHARACTER,5686 TOOLTIP:CHARACTER,5686 L high Maharaja! high Amoghavarsha!!!!"
+		1="DEPOSE_WAR_NAMEWar against the Tyranny of ONCLICK:CHARACTER,7488 TOOLTIP:CHARACTER,7488 L high Prince! high Dil Na'od!!!!"
+	}
+	no_automatic_claims = "@correct_culture_primary_score"
+
+	#c_freiberg = {
+	#	color = { 177 177 177 }
+	#	color2 = { 255 255 255 }
+	#	
+	#	b_freiberg = {
+	#		province = 3028
+	#		
+	#		color = { 177 177 177 }
+	#		color2 = { 255 255 255 }
+	#	}
+	#}
+
+	always_follows_primary_heir = yes
+	de_jure_drift_disabled = @not_real
+
+	male_names = { Alexander "Anastasius" Benedictus Caelestinus Callistus Clemens Eugenius Leo Gregorius Hadrianus Honorius Innocentius Ioannes Lucius Marinus Martinus Nicolaus Sergius Silvester Stephanus Urbanus Victor }
+	data={ {
+			flag="achievement_rags_to_riches_valid"
+			data={
+				type=boolean
+				identity=1
+			}
+		}
+ {
+			flag="started_canute_the_greater_achievement"
+			data={
+				type=boolean
+				identity=1
+			}
+		}
+	}
+}
